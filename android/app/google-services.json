@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "698734756733",
+    "project_id": "cuidapet-leia",
+    "storage_bucket": "cuidapet-leia.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698734756733:android:a04f40421e7a71c1af0214",
+        "android_client_info": {
+          "package_name": "br.com.cl_informatica.cuidapet_leia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCE_43sazQc0589ed36-C5sumCJPdbh_s8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
