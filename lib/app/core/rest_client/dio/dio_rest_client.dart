@@ -8,8 +8,9 @@ import 'package:cuidapet_leia/app/core/rest_client/rest_client_response.dart';
 
 class DioRestClient implements RestClient {
   late final Dio _dio;
+  
 
-  final _defaultOptions = BaseOptions(
+  final _options = BaseOptions(
     baseUrl: Environments.param(Constants.ENV_BASE_URL_KEY) ?? '',
     connectTimeout: Duration(
         seconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_CONECT_TIMEOUT)??'0'),),// int.parse(Constants
@@ -20,32 +21,51 @@ class DioRestClient implements RestClient {
   DioRestClient({
     BaseOptions? baseOptions,
   }) {
-    _dio = Dio(baseOptions ?? _defaultOptions);
+    _dio = Dio(baseOptions ?? _options);
+   
   }
 
   @override
   RestClient auth() {
-    _defaultOptions.extra['auth_required'] = true;
+    _options.extra['auth_required'] = true;
     return this;
   }
 
   @override
   RestClient unauth() {
-    _defaultOptions.extra['auth_required'] = false;
+    _options.extra['auth_required'] = false;
     return this;
+  }
+
+  @override
+  Future<RestClientResponse<T>> post<T>(String path,
+   {data, Map<String, dynamic>? queryParameter, 
+   Map<String, dynamic>? headers,}) async{
+    try {
+      final response = await _dio.post<T>(
+        path,
+        data: data,
+        queryParameters: queryParameter,
+        options: Options(headers: headers));
+
+      return _dioResponseConverter(response);
+    } on DioException catch (e) {
+      _throwRestClientExeption(e);
+    
+  }
   }
 
   @override
   Future<RestClientResponse<T>> delete<T>(String path,
       {data,
       Map<String, dynamic>? queryParameter,
-      Map<String, dynamic>? header}) async {
+      Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.delete(
         path,
         data: data,
         queryParameters: queryParameter,
-        options: Options(headers: header),
+        options: Options(headers: headers),
       );
 
       return _dioResponseConverter(response);
@@ -57,12 +77,12 @@ class DioRestClient implements RestClient {
   @override
   Future<RestClientResponse<T>> get<T>(String path,
       {Map<String, dynamic>? queryParameter,
-      Map<String, dynamic>? header}) async {
+      Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.get(
         path,
         queryParameters: queryParameter,
-        options: Options(headers: header),
+        options: Options(headers: headers),
       );
 
       return _dioResponseConverter(response);
@@ -75,13 +95,13 @@ class DioRestClient implements RestClient {
   Future<RestClientResponse<T>> patch<T>(String path,
       {data,
       Map<String, dynamic>? queryParameter,
-      Map<String, dynamic>? header}) async {
+      Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.patch(
         path,
         data: data,
         queryParameters: queryParameter,
-        options: Options(headers: header),
+        options: Options(headers: headers),
       );
 
       return _dioResponseConverter(response);
@@ -90,36 +110,18 @@ class DioRestClient implements RestClient {
     }
   }
 
-  @override
-  Future<RestClientResponse<T>> post<T>(String path,
-      {data,
-      Map<String, dynamic>? queryParameter,
-      Map<String, dynamic>? header}) async {
-    try {
-      final response = await _dio.patch(
-        path,
-        data: data,
-        queryParameters: queryParameter,
-        options: Options(headers: header),
-      );
-
-      return _dioResponseConverter(response);
-    } on DioException catch (e) {
-      _throwRestClientExeption(e);
-    }
-  }
-
+  
   @override
   Future<RestClientResponse<T>> put<T>(String path,
       {data,
       Map<String, dynamic>? queryParameter,
-      Map<String, dynamic>? header}) async {
+      Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.put(
         path,
         data: data,
         queryParameters: queryParameter,
-        options: Options(headers: header),
+        options: Options(headers: headers),
       );
 
       return _dioResponseConverter(response);
@@ -133,14 +135,14 @@ class DioRestClient implements RestClient {
       {required String method,
       data,
       Map<String, dynamic>? queryParameter,
-      Map<String, dynamic>? header}) async {
+      Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.request(
         path,
         data: data,
         queryParameters: queryParameter,
         options: Options(
-          headers: header,
+          headers: headers,
           method: method,
         ),
       );
@@ -173,4 +175,6 @@ class DioRestClient implements RestClient {
       ),
     );
   }
+  
+  
 }

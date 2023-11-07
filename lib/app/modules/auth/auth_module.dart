@@ -1,3 +1,5 @@
+import 'package:cuidapet_leia/app/core/rest_client/dio/dio_rest_client.dart';
+import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
 import 'package:cuidapet_leia/app/modules/auth/home/auth_home_page.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/login_module.dart';
 import 'package:cuidapet_leia/app/modules/auth/register/register_module.dart';
@@ -12,8 +14,9 @@ class AuthModule extends Module {
 
    @override
    List<Bind>  get binds => [
-    Bind<UserRepository>((i) => UserRepositoryImpl(restClient: i(), logger: i())),
-    Bind<UserService>((i) => UserServiceImpl(userRepository: i(), logger: i())),
+    Bind<RestClient>((i) =>DioRestClient() ),
+    Bind<UserRepository>((i) => UserRepositoryImpl(restClient: i(), log: i())),
+    Bind<UserService>((i) => UserServiceImpl(userRepository: i(), log: i())),
    ];
 
    @override

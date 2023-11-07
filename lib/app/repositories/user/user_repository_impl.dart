@@ -8,29 +8,30 @@ import './user_repository.dart' show UserRepository;
 
 class UserRepositoryImpl implements UserRepository {
   final RestClient _restClient;
-  final AppLogger _logger;
+  final AppLogger _log;
   UserRepositoryImpl({
     required RestClient restClient,
-    required AppLogger logger,
+    required AppLogger log,
   })  : _restClient = restClient,
-        _logger = logger;
+        _log = log;
 
   @override
   Future<void> register(String email, String password) async {
     try {
       await _restClient
-          .unauth()
-          .post('http://192.168.3.62:8080/auth/register', data: {
-        "email": email,
-        "password": password,
+          .unauth().post(
+            '/auth/register',
+             data: {
+                'mail': email,
+                'password': password,
       });
     } on RestClientException catch (e, s) {
       if (e.statusCode == 400 &&
           e.response.data['message'].contains('Usuário já cadastrado')) {
-        _logger.error(e.error, e, s);
+        _log.error(e.error, e, s);
         throw UserExisteException();
       }
-      _logger.error('Erro ao cadastarr usuário', e, s);
+      _log.error('Erro ao cadastarr usuário', e, s);
       throw FailureException(message: 'Erro ao Registar usuário');
     }
   }

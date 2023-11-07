@@ -2,7 +2,6 @@ import 'package:cuidapet_leia/app/exceptions/user_existe_exception.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/widgets/loader.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/widgets/message_alert.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:logger/logger.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
