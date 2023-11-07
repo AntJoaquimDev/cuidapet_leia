@@ -11,7 +11,7 @@ class CoreModule extends Module {
   List<Bind>  get binds => [
     Bind.singleton((i) => AuthStore(),export: true),
     Bind.lazySingleton((i) => AppLoggerImpl(),export: true),
-    //Bind.lazySingleton((i) => DioRestClient(),export: true),
+    Bind.lazySingleton((i) => DioRestClient(),export: true),
 
   ];
   //   i.addLazySingleton<RestClient>(DioRestClient.new);

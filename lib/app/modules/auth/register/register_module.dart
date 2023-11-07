@@ -8,7 +8,7 @@ class RegisterModule extends Module {
 
    @override
    List<Bind> get binds => [
-    Bind.lazySingleton((i) => RegisterController(userService: i(), log: i())),
+    Bind((i) => RegisterController(userService: i(), log: i())),
    ];
 
    @override
