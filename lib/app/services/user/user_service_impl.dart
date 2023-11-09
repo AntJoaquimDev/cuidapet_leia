@@ -16,10 +16,12 @@ class UserServiceImpl implements UserService {
    
   })  : _userRepository = userRepository,
         _log = log;
-final firebaseAuth = FirebaseAuth.instance;
+
+
   @override
   Future<void> register(String email, String password) async {
     try {
+      final firebaseAuth = FirebaseAuth.instance;
             final userMethods = await firebaseAuth.fetchSignInMethodsForEmail(email);
       if (userMethods.isNotEmpty) {
         throw UserExisteException();

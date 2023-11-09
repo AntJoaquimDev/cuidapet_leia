@@ -7,33 +7,32 @@ import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
 import 'package:cuidapet_leia/app/core/rest_client/rest_client_response.dart';
 
 class DioRestClient implements RestClient {
-  late final Dio _dio;
-  
+  late final Dio _dio;  
 
-  final _options = BaseOptions(
+  final _defaultOptions = BaseOptions(
     baseUrl: Environments.param(Constants.ENV_BASE_URL_KEY) ?? '',
-    connectTimeout: Duration(
-        seconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_CONECT_TIMEOUT)??'0'),),// int.parse(Constants
-            //.ENV_REST_CLIENT_CONECT_TIMEOUT)),
+      connectTimeout: Duration(
+        microseconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_CONECT_TIMEOUT)??'0'),),
     receiveTimeout:
-        Duration(seconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_RECIVE_TIMEOUTT)??'0'),),
+        Duration(microseconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_RECIVE_TIMEOUTT)??'0'),),
   );
+  
   DioRestClient({
     BaseOptions? baseOptions,
   }) {
-    _dio = Dio(baseOptions ?? _options);
-   
+    _dio = Dio(baseOptions ?? _defaultOptions);
   }
+
 
   @override
   RestClient auth() {
-    _options.extra['auth_required'] = true;
+    _defaultOptions.extra['auth_required'] = true;
     return this;
   }
 
   @override
   RestClient unauth() {
-    _options.extra['auth_required'] = false;
+    _defaultOptions.extra['auth_required'] = false;
     return this;
   }
 
@@ -159,6 +158,7 @@ class DioRestClient implements RestClient {
       data: response.data,
       statusCode: response.statusCode,
       statusMessage: response.statusMessage,
+      
     );
   }
 

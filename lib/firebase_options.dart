@@ -17,15 +17,24 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,39 +52,11 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCREa2r8U6qn9UCaZ9_lHPz3rgu3Crv_7Q',
-    appId: '1:698734756733:web:f6470436729336ceaf0214',
-    messagingSenderId: '698734756733',
-    projectId: 'cuidapet-leia',
-    authDomain: 'cuidapet-leia.firebaseapp.com',
-    storageBucket: 'cuidapet-leia.appspot.com',
-    measurementId: 'G-BZX03X0GPH',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyCE_43sazQc0589ed36-C5sumCJPdbh_s8',
     appId: '1:698734756733:android:a04f40421e7a71c1af0214',
     messagingSenderId: '698734756733',
     projectId: 'cuidapet-leia',
     storageBucket: 'cuidapet-leia.appspot.com',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyAaSDUq_GHF_JijdXSmLSuwmVgku2qicAk',
-    appId: '1:698734756733:ios:73dc7b57eb61f617af0214',
-    messagingSenderId: '698734756733',
-    projectId: 'cuidapet-leia',
-    storageBucket: 'cuidapet-leia.appspot.com',
-    iosBundleId: 'br.com.clinformatica.cuidapetLeia',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAaSDUq_GHF_JijdXSmLSuwmVgku2qicAk',
-    appId: '1:698734756733:ios:8ef68a776fde2a12af0214',
-    messagingSenderId: '698734756733',
-    projectId: 'cuidapet-leia',
-    storageBucket: 'cuidapet-leia.appspot.com',
-    iosBundleId: 'br.com.clinformatica.cuidapetLeia.RunnerTests',
   );
 }

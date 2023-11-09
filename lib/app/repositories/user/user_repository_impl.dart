@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
 import 'package:cuidapet_leia/app/core/rest_client/dio/rest_client_exception.dart';
 import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
@@ -9,6 +11,7 @@ import './user_repository.dart' show UserRepository;
 class UserRepositoryImpl implements UserRepository {
   final RestClient _restClient;
   final AppLogger _log;
+  
   UserRepositoryImpl({
     required RestClient restClient,
     required AppLogger log,
@@ -26,7 +29,7 @@ class UserRepositoryImpl implements UserRepository {
                 'password': password,
       });
     } on RestClientException catch (e, s) {
-      if (e.statusCode == 400 &&
+      if (e.statusCode == HttpStatus.badRequest &&
           e.response.data['message'].contains('Usuário já cadastrado')) {
         _log.error(e.error, e, s);
         throw UserExisteException();
