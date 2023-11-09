@@ -12,9 +12,9 @@ class DioRestClient implements RestClient {
   final _defaultOptions = BaseOptions(
     baseUrl: Environments.param(Constants.ENV_BASE_URL_KEY) ?? '',
       connectTimeout: Duration(
-        microseconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_CONECT_TIMEOUT)??'0'),),
+        seconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_CONECT_TIMEOUT)??'0'),),
     receiveTimeout:
-        Duration(microseconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_RECIVE_TIMEOUTT)??'0'),),
+        Duration(seconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_RECIVE_TIMEOUTT)??'0'),),
   );
   
   DioRestClient({
@@ -38,7 +38,8 @@ class DioRestClient implements RestClient {
 
   @override
   Future<RestClientResponse<T>> post<T>(String path,
-   {data, Map<String, dynamic>? queryParameter, 
+   {
+    data, Map<String, dynamic>? queryParameter, 
    Map<String, dynamic>? headers,}) async{
     try {
       final response = await _dio.post<T>(

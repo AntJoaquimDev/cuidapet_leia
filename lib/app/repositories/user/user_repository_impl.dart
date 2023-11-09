@@ -25,7 +25,7 @@ class UserRepositoryImpl implements UserRepository {
           .unauth().post(
             '/auth/register',
              data: {
-                'mail': email,
+                'email': email,
                 'password': password,
       });
     } on RestClientException catch (e, s) {
