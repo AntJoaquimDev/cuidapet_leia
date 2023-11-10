@@ -1,6 +1,7 @@
 import 'package:cuidapet_leia/app/exceptions/user_existe_exception.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/widgets/loader.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/widgets/message_alert.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
@@ -16,8 +17,8 @@ abstract class RegisterControllerBase with Store {
   RegisterControllerBase({
     required UserService userService,
     required AppLogger log,
-  })  : _userService = userService,
-        _log = log;
+  })  : _userService = Modular.get<UserService>(),
+        _log = Modular.get<AppLogger>();
 
   Future<void> register(
       {required String email, required String password}) async {
