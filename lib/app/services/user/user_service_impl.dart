@@ -33,7 +33,7 @@ class UserServiceImpl implements UserService {
           .createUserWithEmailAndPassword(email: email, password: password);
       await userRegisterCurrent.user?.sendEmailVerification();
     } on FirebaseException catch (e, s) {
-      _log.error('Erro ao Criar usuário no Firebase');
+      _log.error('Erro ao Criar usuário no Firebase ${e}, ${s}');
       throw FailureException(message: 'Erro ao criar Usuario');
     }
   }
