@@ -6,7 +6,7 @@ class Environments {
   Environments._();
 
   static String? param(String paramName) {
-    if (kReleaseMode) {
+    if (!kReleaseMode) {
       return FirebaseRemoteConfig.instance.getString(paramName);
     } else {
       return dotenv.env[paramName];
