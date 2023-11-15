@@ -1,5 +1,6 @@
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
 import 'package:cuidapet_leia/app/exceptions/failure_exception.dart';
+import 'package:cuidapet_leia/app/exceptions/user_notexists_exception.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/widgets/loader.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/widgets/message_alert.dart';
 import 'package:cuidapet_leia/app/services/user/user_service.dart';
@@ -29,6 +30,11 @@ final UserService _userService;
            } on FailureException catch (e,s) {
             final erroMessage=e.message??'erro ao tentar fazer login';
             _log.error(erroMessage,e,s);
+             Loader.hide();
+             MessageAlert.alert(erroMessage);
+           } on UserNotExistsException  {
+             const erroMessage= 'Usuário não existe ou não encontrado ';
+            _log.error(erroMessage);
              Loader.hide();
              MessageAlert.alert(erroMessage);
            }
