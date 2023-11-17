@@ -1,3 +1,5 @@
+import 'package:cuidapet_leia/app/core/helpers/constants.dart';
+import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
 import 'package:cuidapet_leia/app/exceptions/failure_exception.dart';
 import 'package:cuidapet_leia/app/exceptions/user_existe_exception.dart';
@@ -10,11 +12,15 @@ import './user_service.dart';
 class UserServiceImpl implements UserService {
   final UserRepository _userRepository;
   final AppLogger _log;
+   final LocalStorage _localStorage;
+
   UserServiceImpl({
     required UserRepository userRepository,
     required AppLogger log,
+     required LocalStorage localStorage,
   })  : _userRepository = userRepository,
-        _log = log;
+        _log = log,
+          _localStorage = localStorage;
 
   @override
   Future<void> register(String email, String password) async {
@@ -50,25 +56,37 @@ class UserServiceImpl implements UserService {
       if (loginMethods.isEmpty) {
         throw UserNotExistsException();
       }
+
       if (loginMethods.contains('password')) {
         final userCredential = await firebaseAuth.signInWithEmailAndPassword(
           email: email,
           password: password,
         );
         final userVerified = userCredential.user?.emailVerified ?? false;
+
         if (!userVerified) {
           userCredential.user?.sendEmailVerification();
           throw FailureException(
               message:
                   'E-mail não confirmado, por favor verifique sua caixa de spam.');
         }
-        print('email verificado');
-      } else {
-        throw FailureException(
-            message: 'Login não pode ser feito. Tente outro metodo.');
+
+        final accessToken = await _userRepository.login(email, password);
+
+         await _saveAccessToken(accessToken);
+       final xx = await _localStorage.read<String>(Constants.LOCAL_STORAGE_ACCESSTOKEN_KEY);
+         print(xx);
       }
+
     } on FirebaseAuthException catch (e, s) {
       print(e);
     }
-  }
+  
+  
+
+}
+Future<void>  _saveAccessToken(String accessToken) => _localStorage.write<String>(Constants.LOCAL_STORAGE_ACCESSTOKEN_KEY, accessToken);
+
+
+
 }

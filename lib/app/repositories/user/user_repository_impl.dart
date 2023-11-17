@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
 import 'package:cuidapet_leia/app/core/rest_client/dio/rest_client_exception.dart';
 import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
@@ -11,22 +12,21 @@ import './user_repository.dart' show UserRepository;
 class UserRepositoryImpl implements UserRepository {
   final RestClient _restClient;
   final AppLogger _log;
-  
+ 
   UserRepositoryImpl({
     required RestClient restClient,
     required AppLogger log,
+   
   })  : _restClient = restClient,
         _log = log;
+    
 
   @override
   Future<void> register(String email, String password) async {
     try {
-      await _restClient
-          .unauth().post(
-            '/auth/register',
-             data: {
-                'email': email,
-                'password': password,
+      await _restClient.unauth().post('/auth/register', data: {
+        'email': email,
+        'password': password,
       });
     } on RestClientException catch (e, s) {
       if (e.statusCode == HttpStatus.badRequest &&
@@ -36,6 +36,33 @@ class UserRepositoryImpl implements UserRepository {
       }
       _log.error('Erro ao cadastarr usuário', e, s);
       throw FailureException(message: 'Erro ao Registar usuário');
+    }
+  }
+
+  @override
+  Future<String> login(String email, String password) async {
+    try {
+      final restClient = _restClient.unauth();
+      final result = await restClient.post(
+        '/auth/',
+        data: {
+          'login': email,
+          'password': password,
+          'social_login': false,
+          'supplier_user': false,
+        },
+      );
+      return result.data['access_token'];
+      
+    } on RestClientException catch (e, s) {
+      _log.error('Erro ao realizar login.', e, s);
+      if (e.statusCode == 403) {
+        throw FailureException(
+            message: 'Usuário inconsistente entre em contato com o suporte!');
+      }
+
+      throw FailureException(
+          message: 'Erro ao realizar login, tente novamente!');
     }
   }
 }

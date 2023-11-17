@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+
+    
   flutter_modular: ^5.0.0
   mobx: ^2.2.0
   flutter_mobx: ^2.1.0
