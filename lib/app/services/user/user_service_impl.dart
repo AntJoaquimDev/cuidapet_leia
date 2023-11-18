@@ -1,11 +1,13 @@
 import 'package:cuidapet_leia/app/core/helpers/constants.dart';
 import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
+import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
 import 'package:cuidapet_leia/app/exceptions/failure_exception.dart';
 import 'package:cuidapet_leia/app/exceptions/user_existe_exception.dart';
 import 'package:cuidapet_leia/app/exceptions/user_notexists_exception.dart';
 import 'package:cuidapet_leia/app/repositories/user/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 import './user_service.dart';
 
@@ -74,8 +76,7 @@ class UserServiceImpl implements UserService {
         final accessToken = await _userRepository.login(email, password);
 
          await _saveAccessToken(accessToken);
-       final xx = await _localStorage.read<String>(Constants.LOCAL_STORAGE_ACCESSTOKEN_KEY);
-         print(xx);
+       
       }
 
     } on FirebaseAuthException catch (e, s) {

@@ -1,5 +1,8 @@
 import 'package:cuidapet_leia/app/core/helpers/constants.dart';
 import 'package:cuidapet_leia/app/core/helpers/environments.dart';
+import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
+import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
+import 'package:cuidapet_leia/app/core/rest_client/dio/inteceptors/auth_interceptor.dart';
 import 'package:cuidapet_leia/app/core/rest_client/dio/rest_client_exception.dart';
 import 'package:dio/dio.dart';
 
@@ -7,52 +10,61 @@ import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
 import 'package:cuidapet_leia/app/core/rest_client/rest_client_response.dart';
 
 class DioRestClient implements RestClient {
-  late final Dio _dio;  
+  late final Dio _dio;
 
   final _defaultOptions = BaseOptions(
     baseUrl: Environments.param(Constants.ENV_BASE_URL_KEY) ?? '',
-      connectTimeout: Duration(
-        seconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_CONECT_TIMEOUT)??'0'),),
-    receiveTimeout:
-        Duration(seconds: int.parse(Environments.param(Constants.ENV_REST_CLIENT_RECIVE_TIMEOUTT)??'0'),),
+    connectTimeout: Duration(
+      seconds: int.parse(
+          Environments.param(Constants.ENV_REST_CLIENT_CONECT_TIMEOUT) ?? '0'),
+    ),
+    receiveTimeout: Duration(
+      seconds: int.parse(
+          Environments.param(Constants.ENV_REST_CLIENT_RECIVE_TIMEOUTT) ?? '0'),
+    ),
   );
-  
+
   DioRestClient({
+    required AppLogger log,
+    required LocalStorage localStorage,
     BaseOptions? baseOptions,
   }) {
     _dio = Dio(baseOptions ?? _defaultOptions);
+    _dio.interceptors.addAll([
+      AuthInterceptor(localStorage: localStorage, log: log),
+      LogInterceptor(requestBody: true, responseBody: true),
+    ]);
   }
-
 
   @override
   RestClient auth() {
-    _defaultOptions.extra['auth_required'] = true;
+    _defaultOptions.extra[Constants.REST_CLIENT_ALTH_REQUIRED_KEY] = true;
     return this;
   }
 
   @override
   RestClient unauth() {
-    _defaultOptions.extra['auth_required'] = false;
+    _defaultOptions.extra[Constants.REST_CLIENT_ALTH_REQUIRED_KEY] = false;
     return this;
   }
 
   @override
-  Future<RestClientResponse<T>> post<T>(String path,
-   {
-    data, Map<String, dynamic>? queryParameter, 
-   Map<String, dynamic>? headers,}) async{
+  Future<RestClientResponse<T>> post<T>(
+    String path, {
+    data,
+    Map<String, dynamic>? queryParameter,
+    Map<String, dynamic>? headers,
+  }) async {
     try {
-      final response = await _dio.post<T>(
-        path,
-        data: data,
-        queryParameters: queryParameter,
-        options: Options(headers: headers));
+      final response = await _dio.post<T>(path,
+          data: data,
+          queryParameters: queryParameter,
+          options: Options(headers: headers));
 
       return _dioResponseConverter(response);
     } on DioException catch (e) {
       _throwRestClientExeption(e);
-    
-  }
+    }
   }
 
   @override
@@ -110,7 +122,6 @@ class DioRestClient implements RestClient {
     }
   }
 
-  
   @override
   Future<RestClientResponse<T>> put<T>(String path,
       {data,
@@ -159,7 +170,6 @@ class DioRestClient implements RestClient {
       data: response.data,
       statusCode: response.statusCode,
       statusMessage: response.statusMessage,
-      
     );
   }
 
@@ -176,6 +186,4 @@ class DioRestClient implements RestClient {
       ),
     );
   }
-  
-  
 }

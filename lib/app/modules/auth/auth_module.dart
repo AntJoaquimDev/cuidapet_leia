@@ -13,7 +13,7 @@ import 'package:flutter_modular/flutter_modular.dart';
 class AuthModule extends Module {
   @override
   List<Bind> get binds => [
-        Bind<RestClient>((i) => DioRestClient()),
+       // Bind<RestClient>((i) => DioRestClient()),
         Bind<UserRepository>((i) => UserRepositoryImpl(
               restClient: i(),
               log: i(),
