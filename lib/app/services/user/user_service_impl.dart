@@ -1,32 +1,32 @@
 import 'package:cuidapet_leia/app/core/helpers/constants.dart';
 import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
-import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
 import 'package:cuidapet_leia/app/exceptions/failure_exception.dart';
-import 'package:cuidapet_leia/app/exceptions/user_existe_exception.dart';
 import 'package:cuidapet_leia/app/exceptions/user_notexists_exception.dart';
 import 'package:cuidapet_leia/app/repositories/user/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 import './user_service.dart';
 
 class UserServiceImpl implements UserService {
   final UserRepository _userRepository;
   final AppLogger _log;
-   final LocalStorage _localStorage;
+  final LocalStorage _localStorage;
+  final LocalSecureStoge _localSecureStoge;
 
   UserServiceImpl({
     required UserRepository userRepository,
     required AppLogger log,
-     required LocalStorage localStorage,
+    required LocalStorage localStorage,
+    required LocalSecureStoge localSecureStoge,
   })  : _userRepository = userRepository,
         _log = log,
-          _localStorage = localStorage;
+        _localStorage = localStorage,
+        _localSecureStoge = localSecureStoge;
 
   @override
   Future<void> register(String email, String password) async {
-   try {
+    try {
       final firebaseAuth = FirebaseAuth.instance;
       final userMethods = await firebaseAuth.fetchSignInMethodsForEmail(email);
 
@@ -47,7 +47,6 @@ class UserServiceImpl implements UserService {
       throw FailureException(message: 'Erro ao criar usuário.');
     }
   }
-
 
   @override
   Future<void> login(String email, String password) async {
@@ -75,19 +74,22 @@ class UserServiceImpl implements UserService {
 
         final accessToken = await _userRepository.login(email, password);
 
-         await _saveAccessToken(accessToken);
-       
+        await _saveAccessToken(accessToken);
+        await _confirmLogin();
       }
-
     } on FirebaseAuthException catch (e, s) {
       print(e);
     }
-  
-  
+  }
 
-}
-Future<void>  _saveAccessToken(String accessToken) => _localStorage.write<String>(Constants.LOCAL_STORAGE_ACCESSTOKEN_KEY, accessToken);
+  Future<void> _saveAccessToken(String accessToken) => _localStorage
+      .write<String>(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY, accessToken);
 
+  Future<void> _confirmLogin() async {
+    final confirmLoginModel = await _userRepository.confirmeLogin();
+    await _saveAccessToken(confirmLoginModel.accessToken);
 
-
+    await _localSecureStoge.write(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+        confirmLoginModel.refreshsToken);
+  }
 }

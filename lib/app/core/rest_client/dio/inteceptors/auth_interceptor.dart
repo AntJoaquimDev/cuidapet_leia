@@ -6,8 +6,6 @@ import 'package:dio/dio.dart';
 import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
 
-
-
 @JsonSerializable()
 class AuthInterceptor extends Interceptor {
   LocalStorage _localStorage;
@@ -24,8 +22,7 @@ class AuthInterceptor extends Interceptor {
         options.extra[Constants.REST_CLIENT_ALTH_REQUIRED_KEY] ?? false;
 
     if (authRequired) {
-      final accessToken = await _localStorage
-          .read<String>(Constants.LOCAL_STORAGE_ACCESSTOKEN_KEY);
+      final accessToken = await _localStorage.read<String>(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY);
       if (accessToken == null) {
         return handler.reject(DioException(
           requestOptions: options,
@@ -33,8 +30,8 @@ class AuthInterceptor extends Interceptor {
           type: DioExceptionType.cancel,
         ));
       }
-      options.headers['Authorization']=accessToken;
-    }else{
+      options.headers['Authorization'] = accessToken;
+    } else {
       options.headers.remove('Authorization');
     }
     handler.next(options);
@@ -42,7 +39,7 @@ class AuthInterceptor extends Interceptor {
 
   // @override
   // void onResponse(Response response, ResponseInterceptorHandler handler) {
-    
+
   //   super.onResponse(response, handler);
   // }
 

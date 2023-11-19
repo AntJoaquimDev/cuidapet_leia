@@ -23,6 +23,7 @@ class AuthModule extends Module {
             userRepository: i(),
             log: i(),
             localStorage: i(),
+            localSecureStoge: i(),
           ),
         ),
       ];
