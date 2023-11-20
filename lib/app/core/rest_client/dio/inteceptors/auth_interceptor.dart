@@ -1,3 +1,4 @@
+import 'package:cuidapet_leia/app/modules/core/auth/auth_store.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:cuidapet_leia/app/core/helpers/constants.dart';
@@ -7,14 +8,18 @@ import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
 
 @JsonSerializable()
-class AuthInterceptor extends Interceptor {
+class AuthInterceptors extends Interceptor {
   LocalStorage _localStorage;
+  final AuthStore _authStore;
   AppLogger _log;
-  AuthInterceptor({
+  AuthInterceptors({
     required LocalStorage localStorage,
     required AppLogger log,
+    required AuthStore authStore,
   })  : _localStorage = localStorage,
-        _log = log;
+         _authStore = authStore,
+         _log=log;
+
   @override
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {

@@ -6,7 +6,7 @@ abstract class LocalStorage {
   Future<void> clear();
 }
 
-abstract class LocalSecureStoge {
+abstract class LocalSecureStorage {
   Future<String?> read(String key);
   Future<void> write<V>(String key, String value);
   Future<bool> contains(String key);

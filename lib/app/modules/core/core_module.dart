@@ -21,8 +21,8 @@ class CoreModule extends Module {
     Bind.lazySingleton((i) => AppLoggerImpl(),export: true),
     Bind.singleton((i) => AuthStore(),export: true),
     Bind.singleton<LocalStorage>((i) => SharedPreferencesLocalStorageImpl(), export: true),
-    Bind.singleton<LocalSecureStoge>((i) => FlutterSecureStoreLocalStorageImpl (), export: true),
-     Bind.lazySingleton<RestClient>((i) => DioRestClient(localStorage: i(),log: i()),export: true),
+    Bind.singleton<LocalSecureStorage>((i) => FlutterSecureStoreLocalStorageImpl (), export: true),
+     Bind.lazySingleton<RestClient>((i) => DioRestClient(localStorage: i(),log: i(),authStore: i(), localSecureStorage: i()),export: true),
 
   ];
   
