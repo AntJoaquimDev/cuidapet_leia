@@ -6,7 +6,7 @@ class Environments {
   Environments._();
 
   static String? param(String paramName) {
-    if (!kReleaseMode) {
+    if (kReleaseMode) {
       return FirebaseRemoteConfig.instance.getString(paramName);
     } else {
       return dotenv.env[paramName];
@@ -19,7 +19,7 @@ class Environments {
       await remoteConfig.setConfigSettings(
         RemoteConfigSettings(
         fetchTimeout: const Duration(minutes: 1),
-        minimumFetchInterval: const Duration(hours: 1),
+        minimumFetchInterval: const Duration(seconds: 10),
       ),
       );
      await remoteConfig.fetchAndActivate();

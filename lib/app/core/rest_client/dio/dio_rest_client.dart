@@ -13,48 +13,40 @@ import 'package:cuidapet_leia/app/core/rest_client/rest_client_response.dart';
 class DioRestClient implements RestClient {
   late final Dio _dio;
 
-
   final _defaultOptions = BaseOptions(
     baseUrl: Environments.param(Constants.ENV_BASE_URL_KEY) ?? '',
     connectTimeout: Duration(
-      milliseconds: int.parse(
-          Environments.param(Constants.ENV_REST_CLIENTE_CONNECT_TIMEOUT_KEY) ??
-              '0'),
+      seconds: int.parse(
+          Environments.param(Constants.ENV_REST_CLIENTE_CONNECT_TIMEOUT_KEY) ?? '0'),
     ),
     receiveTimeout: Duration(
-      milliseconds: int.parse(
-          Environments.param(Constants.ENV_REST_CLIENTE_RECEIVE_TIMEOUT_KEY) ??
-              '0'),
+      seconds: int.parse(
+          Environments.param(Constants.ENV_REST_CLIENTE_RECEIVE_TIMEOUT_KEY) ?? '0'),
     ),
   );
 
- DioRestClient({
-    required LocalStorage localStorage,
-    required LocalSecureStorage localSecureStorage,
+  DioRestClient({
     required AppLogger log,
-    required AuthStore authStore,
+    required LocalStorage localStorage,
+     required AuthStore authStore,
     BaseOptions? baseOptions,
   }) {
     _dio = Dio(baseOptions ?? _defaultOptions);
     _dio.interceptors.addAll([
-      AuthInterceptors(
-        localStorage: localStorage,
-        authStore: authStore,
-        log: log,
-      ),
+      AuthInterceptors(localStorage: localStorage, log: log,authStore:authStore),
       LogInterceptor(requestBody: true, responseBody: true),
     ]);
   }
 
   @override
   RestClient auth() {
-    _defaultOptions.extra[Constants.REST_CLIENT_ALTH_REQUIRED_KEY] = true;
+    _defaultOptions.extra[Constants.REST_CLIENT_AUTH_REQUIRED_KEY] = true;
     return this;
   }
 
   @override
   RestClient unauth() {
-    _defaultOptions.extra[Constants.REST_CLIENT_ALTH_REQUIRED_KEY] = false;
+    _defaultOptions.extra[Constants.REST_CLIENT_AUTH_REQUIRED_KEY] = false;
     return this;
   }
 

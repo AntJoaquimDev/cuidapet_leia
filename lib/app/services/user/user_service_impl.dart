@@ -78,7 +78,7 @@ class UserServiceImpl implements UserService {
 
         await _saveAccessToken(accessToken);
         await _confirmLogin();
-        await _getUserData();
+        //await _getUserData();
     } on FirebaseAuthException catch (e, s) {
        _log.error('Erro ao realizar login com ', e, s);
       throw FailureException(message: 'Erro ao realizar login.');

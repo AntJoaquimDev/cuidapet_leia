@@ -24,7 +24,7 @@ class AuthInterceptors extends Interceptor {
   Future<void> onRequest(
       RequestOptions options, RequestInterceptorHandler handler) async {
     final authRequired =
-        options.extra[Constants.REST_CLIENT_ALTH_REQUIRED_KEY] ?? false;
+        options.extra[Constants.REST_CLIENT_AUTH_REQUIRED_KEY] ?? false;
 
     if (authRequired) {
       final accessToken = await _localStorage.read<String>(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY);
