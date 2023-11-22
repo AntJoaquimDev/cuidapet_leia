@@ -6,6 +6,7 @@ import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
 import 'package:cuidapet_leia/app/exceptions/failure_exception.dart';
 import 'package:cuidapet_leia/app/exceptions/user_existe_exception.dart';
 import 'package:cuidapet_leia/app/models/confirm_login_model.dart';
+import 'package:cuidapet_leia/app/models/social_network_model.dart';
 import 'package:cuidapet_leia/app/models/user_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -95,4 +96,29 @@ class UserRepositoryImpl implements UserRepository {
     }
   }
 
+  @override
+  Future<String> loginSocial(SocialNetworkModel model) async {
+    try {
+      final result = await _restClient.unauth().post('/auth/', data: {
+        'login': model.email,
+        'social_login': true,
+        'avatar': model.avatar,
+        'social_type': model.type,
+        'social_key': model.id,
+        'supplier_user': false,
+      });
+
+      return result.data['access_token'];
+    } on RestClientException catch (e, s) {
+      _log.error('Erro ao realizar login.', e, s);
+      if (e.statusCode == 403) {
+        throw FailureException(
+            message: 'Usuário inconsistente entre em contato com o suporte!');
+      }
+
+      throw FailureException(message: 'Erro ao realizar login, tente novamente!');
+    }
+  }
 }
+
+
