@@ -1,7 +1,7 @@
 import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class FlutterSecureStoreLocalStorageImpl implements LocalSecureStoge {
+class FlutterSecureStoreLocalStorageImpl implements LocalSecureStorage {
   FlutterSecureStorage get _instance => const FlutterSecureStorage();
   @override
   Future<void> clear() => _instance.deleteAll();

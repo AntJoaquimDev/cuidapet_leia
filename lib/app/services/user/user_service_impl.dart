@@ -1,7 +1,8 @@
-
+import 'package:cuidapet_leia/app/core/helpers/constants.dart';
+import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
 import 'package:cuidapet_leia/app/exceptions/failure_exception.dart';
-import 'package:cuidapet_leia/app/exceptions/user_existe_exception.dart';
+import 'package:cuidapet_leia/app/exceptions/user_notexists_exception.dart';
 import 'package:cuidapet_leia/app/repositories/user/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -10,43 +11,94 @@ import './user_service.dart';
 class UserServiceImpl implements UserService {
   final UserRepository _userRepository;
   final AppLogger _log;
+  final LocalStorage _localStorage;
+  final LocalSecureStorage _localSecureStoge;
+
   UserServiceImpl({
     required UserRepository userRepository,
-    required AppLogger log, 
-   
+    required AppLogger log,
+    required LocalStorage localStorage,
+    required LocalSecureStorage localSecureStoge,
   })  : _userRepository = userRepository,
-        _log = log;
-
+        _log = log,
+        _localStorage = localStorage,
+        _localSecureStoge = localSecureStoge;
 
   @override
   Future<void> register(String email, String password) async {
     try {
       final firebaseAuth = FirebaseAuth.instance;
-            final userMethods = await firebaseAuth.fetchSignInMethodsForEmail(email);
+      final userMethods = await firebaseAuth.fetchSignInMethodsForEmail(email);
+
       if (userMethods.isNotEmpty) {
-        throw UserExisteException();
+        throw UserNotExistsException();
       }
+
       await _userRepository.register(email, password);
-      
- 
-      final userRegisterCurrent = await firebaseAuth
-          .createUserWithEmailAndPassword(email: email, password: password);
-      await userRegisterCurrent.user?.sendEmailVerification();
+      final userRegisterCredential =
+          await firebaseAuth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      await userRegisterCredential.user?.sendEmailVerification();
     } on FirebaseException catch (e, s) {
-      _log.error('Erro ao Criar usuário no Firebase ${e}, ${s}');
-      throw FailureException(message: 'Erro ao criar Usuario');
+      _log.error('Erro ao criar usuário no firebase.', e, s);
+      throw FailureException(message: 'Erro ao criar usuário.');
     }
   }
 
- @override
-  Future<void> register2(String email, String password) async {
+  @override
+  Future<void> login(String email, String password) async {
     try {
-      await _userRepository.register(email, password);
-      await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(email: email, password: password);
+      final firebaseAuth = FirebaseAuth.instance;
+      final loginMethods = await firebaseAuth.fetchSignInMethodsForEmail(email);
+
+      if (loginMethods.isEmpty) {
+        throw UserNotExistsException();
+      }
+
+      if (loginMethods.contains('password')) {
+        final userCredential = await firebaseAuth.signInWithEmailAndPassword(
+          email: email,
+          password: password,
+        );
+        final userVerified = userCredential.user?.emailVerified ?? false;
+
+        if (!userVerified) {
+          userCredential.user?.sendEmailVerification();
+          throw FailureException(
+              message:
+                  'E-mail não confirmado, por favor verifique sua caixa de spam.');
+        }
+      }
+      final accessToken = await _userRepository.login(email, password);
+
+      await _saveAccessToken(accessToken);
+      await _confirmLogin();
+      await _getUserData();
     } on FirebaseAuthException catch (e, s) {
-      _log.error('Erro ao criar usuário no FirebaseAuth', e, s);
-      throw FailureException(message: 'Erro ao criar usuário no FirebaseAuth');
+      _log.error('Erro ao realizar login com ', e, s);
+      throw FailureException(message: 'Erro ao realizar login.');
     }
+  }
+
+  Future<void> _saveAccessToken(String accessToken) => _localStorage
+      .write<String>(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY, accessToken);
+
+  Future<void> _confirmLogin() async {
+    final confirmLoginModel = await _userRepository.confirmeLogin();
+    await _saveAccessToken(confirmLoginModel.accessToken);
+
+    await _localSecureStoge.write<String>(
+        Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+        confirmLoginModel.refreshToken);
+  }
+
+  Future<void> _getUserData() async {
+    final userModel = await _userRepository.getUserLogged();
+
+    await _localStorage.write<String>(
+        Constants.LOCAL_STORAGE_USER_LOGGED_DATA_KEY, userModel.toJson());
   }
 }

@@ -10,30 +10,27 @@ class UserModel {
     required this.imgAvatar,
   });
 
-  UserModel.empyt()
+  UserModel.empty()
       : email = '',
         registerType = '',
         imgAvatar = '';
 
   Map<String, dynamic> toMap() {
-    final result = <String, dynamic>{};
-
-    result.addAll({'email': email});
-    result.addAll({'registerType': registerType});
-    result.addAll({'imgAvatar': imgAvatar});
-
-    return result;
+    return <String, dynamic>{
+      'email': email,
+      'register_type': registerType,
+      'img_avatar': imgAvatar,
+    };
   }
-
   factory UserModel.fromMap(Map<String, dynamic> map) {
     return UserModel(
       email: map['email'] ?? '',
-      registerType: map['registerType'] ?? '',
-      imgAvatar: map['imgAvatar'] ?? '',
+      registerType: map['register_Type'] ?? '',
+      imgAvatar: map['img_Avatar'] ?? '',
     );
   }
 
-  String toJson() => json.encode(toMap());
+ String toJson() => json.encode(toMap());
 
   factory UserModel.fromJson(String source) =>
       UserModel.fromMap(json.decode(source));

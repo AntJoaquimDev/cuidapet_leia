@@ -30,6 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+
+    
   flutter_modular: ^5.0.0
   mobx: ^2.2.0
   flutter_mobx: ^2.1.0
@@ -42,6 +45,7 @@ dependencies:
   firebase_remote_config: ^4.3.3
   firebase_analytics: ^10.6.3
   flutter_secure_storage: ^9.0.0
+  firebase_messaging: ^14.0.1
   shared_preferences: ^2.2.1
   logger: ^2.0.2+1
   validatorless: ^1.2.3
