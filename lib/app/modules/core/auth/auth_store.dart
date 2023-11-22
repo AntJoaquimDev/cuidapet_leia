@@ -1,4 +1,5 @@
 import 'package:cuidapet_leia/app/core/helpers/constants.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobx/mobx.dart';
 
 import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
@@ -29,5 +30,19 @@ abstract class AuthStoreBase with Store {
     } else {
       _userLogged = UserModel.empty();
     }
+
+    FirebaseAuth.instance.authStateChanges().listen((user)async { 
+      if (user == null) {
+       await logout();
+      }
+
+    });
   }
+  @action
+  Future<void> logout()async{
+  await _localStorage.clear();
+        _userLogged = UserModel.empty();
 }
+}
+
+

@@ -27,6 +27,7 @@ final UserService _userService;
               Loader.show();
            await _userService.login(email, password);
             Loader.hide();
+            Modular.to.navigate('/auth/');
            } on FailureException catch (e,s) {
             final erroMessage=e.message??'erro ao tentar fazer login';
             _log.error(erroMessage,e,s);
