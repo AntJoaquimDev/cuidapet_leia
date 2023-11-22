@@ -73,19 +73,21 @@ class UserRepositoryImpl implements UserRepository {
         'ios_token': Platform.isIOS ? deviceToken : null,
         'android_token': Platform.isAndroid ? deviceToken : null
       });
-      final code =  result.statusCode;
-      print(deviceToken);
-      print(code);
+      
+      
       return ConfirLoginModel.fromMap(result.data);
     } on RestClientException catch (e, s) {
       _log.error('Erro ao confirmar Login', e, s);
       throw FailureException(message: 'Erro ao confirmar Login');
     }
   }
+
+  
     @override
   Future<UserModel> getUserLogged() async {
     try {
       final result = await _restClient.get('/user/');
+   
       return UserModel.fromMap(result.data);
     } on RestClientException catch (e, s) {
       _log.error('Erro ao buscar dados do usuário logado.', e, s);

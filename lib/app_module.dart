@@ -16,7 +16,7 @@ class AppModule extends Module {
   @override
   List<Module> get imports => [
         CoreModule(),
-        RegisterModule()
+       // RegisterModule()
       ];
 
 

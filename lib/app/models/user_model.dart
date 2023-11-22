@@ -10,7 +10,7 @@ class UserModel {
     required this.imgAvatar,
   });
 
-  UserModel.empyt()
+  UserModel.empty()
       : email = '',
         registerType = '',
         imgAvatar = '';

@@ -71,18 +71,15 @@ class UserServiceImpl implements UserService {
               message:
                   'E-mail não confirmado, por favor verifique sua caixa de spam.');
         }
-
-        
       }
       final accessToken = await _userRepository.login(email, password);
 
-        await _saveAccessToken(accessToken);
-        await _confirmLogin();
-        //await _getUserData();
+      await _saveAccessToken(accessToken);
+      await _confirmLogin();
+      await _getUserData();
     } on FirebaseAuthException catch (e, s) {
-       _log.error('Erro ao realizar login com ', e, s);
+      _log.error('Erro ao realizar login com ', e, s);
       throw FailureException(message: 'Erro ao realizar login.');
-      print(e);
     }
   }
 
@@ -93,12 +90,14 @@ class UserServiceImpl implements UserService {
     final confirmLoginModel = await _userRepository.confirmeLogin();
     await _saveAccessToken(confirmLoginModel.accessToken);
 
-    await _localSecureStoge.write(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-        confirmLoginModel.refreshsToken);
+    await _localSecureStoge.write<String>(
+        Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+        confirmLoginModel.refreshToken);
   }
 
   Future<void> _getUserData() async {
     final userModel = await _userRepository.getUserLogged();
+
     await _localStorage.write<String>(
         Constants.LOCAL_STORAGE_USER_LOGGED_DATA_KEY, userModel.toJson());
   }

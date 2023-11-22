@@ -17,23 +17,29 @@ class DioRestClient implements RestClient {
     baseUrl: Environments.param(Constants.ENV_BASE_URL_KEY) ?? '',
     connectTimeout: Duration(
       seconds: int.parse(
-          Environments.param(Constants.ENV_REST_CLIENTE_CONNECT_TIMEOUT_KEY) ?? '0'),
+          Environments.param(Constants.ENV_REST_CLIENTE_CONNECT_TIMEOUT_KEY) ??
+              '0'),
     ),
     receiveTimeout: Duration(
       seconds: int.parse(
-          Environments.param(Constants.ENV_REST_CLIENTE_RECEIVE_TIMEOUT_KEY) ?? '0'),
+          Environments.param(Constants.ENV_REST_CLIENTE_RECEIVE_TIMEOUT_KEY) ??
+              '0'),
     ),
   );
 
   DioRestClient({
     required AppLogger log,
     required LocalStorage localStorage,
-     required AuthStore authStore,
+    required AuthStore authStore,
     BaseOptions? baseOptions,
   }) {
     _dio = Dio(baseOptions ?? _defaultOptions);
     _dio.interceptors.addAll([
-      AuthInterceptors(localStorage: localStorage, log: log,authStore:authStore),
+      AuthInterceptors(
+        localStorage: localStorage,
+        log: log,
+        authStore: authStore,
+      ),
       LogInterceptor(requestBody: true, responseBody: true),
     ]);
   }
@@ -54,13 +60,13 @@ class DioRestClient implements RestClient {
   Future<RestClientResponse<T>> post<T>(
     String path, {
     data,
-    Map<String, dynamic>? queryParameter,
+    Map<String, dynamic>? queryParameters,
     Map<String, dynamic>? headers,
   }) async {
     try {
       final response = await _dio.post<T>(path,
           data: data,
-          queryParameters: queryParameter,
+          queryParameters: queryParameters,
           options: Options(headers: headers));
 
       return _dioResponseConverter(response);
@@ -72,13 +78,13 @@ class DioRestClient implements RestClient {
   @override
   Future<RestClientResponse<T>> delete<T>(String path,
       {data,
-      Map<String, dynamic>? queryParameter,
+      Map<String, dynamic>? queryParameters,
       Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.delete(
         path,
         data: data,
-        queryParameters: queryParameter,
+        queryParameters: queryParameters,
         options: Options(headers: headers),
       );
 
@@ -89,13 +95,15 @@ class DioRestClient implements RestClient {
   }
 
   @override
-  Future<RestClientResponse<T>> get<T>(String path,
-      {Map<String, dynamic>? queryParameter,
-      Map<String, dynamic>? headers}) async {
+  Future<RestClientResponse<T>> get<T>(
+    String path, {
+    Map<String, dynamic>? queryParameters,
+    Map<String, dynamic>? headers,
+  }) async {
     try {
       final response = await _dio.get(
         path,
-        queryParameters: queryParameter,
+        queryParameters: queryParameters,
         options: Options(headers: headers),
       );
 
@@ -108,13 +116,13 @@ class DioRestClient implements RestClient {
   @override
   Future<RestClientResponse<T>> patch<T>(String path,
       {data,
-      Map<String, dynamic>? queryParameter,
+      Map<String, dynamic>? queryParameters,
       Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.patch(
         path,
         data: data,
-        queryParameters: queryParameter,
+        queryParameters: queryParameters,
         options: Options(headers: headers),
       );
 
@@ -127,13 +135,13 @@ class DioRestClient implements RestClient {
   @override
   Future<RestClientResponse<T>> put<T>(String path,
       {data,
-      Map<String, dynamic>? queryParameter,
+      Map<String, dynamic>? queryParameters,
       Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.put(
         path,
         data: data,
-        queryParameters: queryParameter,
+        queryParameters: queryParameters,
         options: Options(headers: headers),
       );
 
@@ -147,13 +155,13 @@ class DioRestClient implements RestClient {
   Future<RestClientResponse<T>> request<T>(String path,
       {required String method,
       data,
-      Map<String, dynamic>? queryParameter,
+      Map<String, dynamic>? queryParameters,
       Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.request(
         path,
         data: data,
-        queryParameters: queryParameter,
+        queryParameters: queryParameters,
         options: Options(
           headers: headers,
           method: method,

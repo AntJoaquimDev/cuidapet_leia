@@ -1,3 +1,5 @@
+import 'package:cuidapet_leia/app/core/helpers/constants.dart';
+import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/login_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -15,13 +17,16 @@ part 'widgets/login_form.dart';
 part 'widgets/login_register_buttom.dart';
 
 class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+   LoginPage({Key? key}) : super(key: key){
+    
+  }
 
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
 
 class _LoginPageState extends State<LoginPage> {
+  
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +38,7 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.all(20),
           child: Column(
             children: [
-             //Text(url ?? ''),
+            // Text(url ?? ''),
               const SizedBox(height: 50),
               Center(
                 child: Image.asset(

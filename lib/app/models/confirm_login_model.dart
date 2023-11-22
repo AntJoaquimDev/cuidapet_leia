@@ -3,23 +3,23 @@ import 'dart:convert';
 
 class ConfirLoginModel {
   final String accessToken;
-  final String refreshsToken;
+  final String refreshToken;
   ConfirLoginModel({
     required this.accessToken,
-    required this.refreshsToken,
+    required this.refreshToken,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'access_Token': accessToken,
-      'refreshs_Token': refreshsToken,
+      'access_token': accessToken,
+      'refresh_token': refreshToken,
     };
   }
 
   factory ConfirLoginModel.fromMap(Map<String, dynamic> map) {
     return ConfirLoginModel(
-      accessToken: map['access_Token'] ?? '',
-      refreshsToken: map['refreshs_Token'] ?? '',
+      accessToken: map['access_token'] ?? '',
+      refreshToken: map['refresh_token'] ?? '',
     );
   }
 
