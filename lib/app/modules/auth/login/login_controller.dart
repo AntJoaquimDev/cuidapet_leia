@@ -12,47 +12,45 @@ part 'login_controller.g.dart';
 class LoginController = LoginControllerBase with _$LoginController;
 
 abstract class LoginControllerBase with Store {
-
-final UserService _userService;
+  final UserService _userService;
   final AppLogger _log;
   LoginControllerBase({
     required UserService userService,
     required AppLogger log,
   })  : _userService = userService,
-        _log =log;
+        _log = log;
 
+  Future<void> login(String email, String password) async {
+    try {
+      Loader.show();
+      await _userService.login(email, password);
+      Loader.hide();
+      Modular.to.navigate('/auth/');
+    } on FailureException catch (e, s) {
+      final erroMessage = e.message ?? 'erro ao tentar fazer login';
+      _log.error(erroMessage, e, s);
+      Loader.hide();
+      MessageAlert.alert(erroMessage);
+    } on UserNotExistsException {
+      const erroMessage = 'Usuário não existe ou não encontrado ';
+      MessageAlert.alert(erroMessage);
+      _log.error(erroMessage);
+       
+      Loader.hide();
+     
+    }
+  }
 
-        Future<void>login(String email, String password)async{
-           try {
-              Loader.show();
-           await _userService.login(email, password);
-            Loader.hide();
-            Modular.to.navigate('/auth/');
-           } on FailureException catch (e,s) {
-            final erroMessage=e.message??'erro ao tentar fazer login';
-            _log.error(erroMessage,e,s);
-             Loader.hide();
-             MessageAlert.alert(erroMessage);
-           } on UserNotExistsException  {
-             const erroMessage= 'Usuário não existe ou não encontrado ';
-            _log.error(erroMessage);
-             Loader.hide();
-             MessageAlert.alert(erroMessage);
-           }
-
-        }
-
-          Future<void> socialLogin(SocialLoginType socialLoginType) async {
+  Future<void> socialLogin(SocialLoginType socialLoginType) async {
     try {
       Loader.show();
       _userService.socialLogin(socialLoginType);
       Loader.hide();
-      Modular.to.navigate('/auth/');
+       Modular.to.navigate('/auth/');
     } on FailureException catch (e, s) {
       Loader.hide();
       _log.error('Erro ao realizar login', e, s);
-      MessageAlert.alert(e.message ?? 'Erro ao realizar loginT.');
+      MessageAlert.alert(e.message ?? 'Erro ao realizar login.');
     }
   }
-
 }

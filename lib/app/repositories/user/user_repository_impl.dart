@@ -112,6 +112,7 @@ class UserRepositoryImpl implements UserRepository {
     } on RestClientException catch (e, s) {
       _log.error('Erro ao realizar login.', e, s);
       if (e.statusCode == 403) {
+         _log.error('Erro ao realizar login.', e, s);
         throw FailureException(
             message: 'Usuário inconsistente entre em contato com o suporte!');
       }

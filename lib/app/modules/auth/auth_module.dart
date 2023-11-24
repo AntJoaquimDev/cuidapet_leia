@@ -12,21 +12,18 @@ import 'package:flutter_modular/flutter_modular.dart';
 
 class AuthModule extends Module {
   @override
-  List<Bind>  binds = [
-       Bind.lazySingleton<SocialRepository>((i) => SocialRepositoryImpl()),
-        Bind.lazySingleton<UserRepository>((i) => UserRepositoryImpl(
-              log: i(),
-              restClient: i(),
-            )),
-        Bind.lazySingleton<UserService>((i) => UserServiceImpl(
-            log: i(),
-            userRepository: i(),
-            localStorage: i(),
-            localSecureStoge: i(),
-            socialRepository: i(),
-          )
-        ),
-      ];
+  List<Bind> binds = [
+    Bind.lazySingleton<SocialRepository>((i) => SocialRepositoryImpl()),
+    Bind.lazySingleton<UserRepository>(
+        (i) => UserRepositoryImpl(log: i(), restClient: i())),
+    Bind.lazySingleton<UserService>((i) => UserServiceImpl(
+          log: i(),
+          userRepository: i(),
+          localStorage: i(),
+          localSecureStoge: i(),
+          socialRepository: i(),
+        )),
+  ];
 
   @override
   List<ModularRoute> get routes => [

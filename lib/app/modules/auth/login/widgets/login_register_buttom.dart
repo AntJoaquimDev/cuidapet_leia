@@ -47,7 +47,7 @@ class _LoginRegisterButtom extends StatelessWidget {
         ),
         TextButton.icon(
           onPressed: () {
-            Navigator.pushNamed(context, '/auth/register');
+            Navigator.pushNamed(context, '/auth/register/');
           },
           icon: Icon(
             Icons.email,
