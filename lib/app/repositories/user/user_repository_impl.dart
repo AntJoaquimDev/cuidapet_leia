@@ -74,8 +74,6 @@ class UserRepositoryImpl implements UserRepository {
         'ios_token': Platform.isIOS ? deviceToken : null,
         'android_token': Platform.isAndroid ? deviceToken : null
       });
-      
-      
       return ConfirLoginModel.fromMap(result.data);
     } on RestClientException catch (e, s) {
       _log.error('Erro ao confirmar Login', e, s);
@@ -83,16 +81,16 @@ class UserRepositoryImpl implements UserRepository {
     }
   }
 
-  
-    @override
+  @override
   Future<UserModel> getUserLogged() async {
     try {
       final result = await _restClient.get('/user/');
-   
+
       return UserModel.fromMap(result.data);
     } on RestClientException catch (e, s) {
       _log.error('Erro ao buscar dados do usuário logado.', e, s);
-      throw FailureException(message: 'Erro ao buscar dados do usuários logado.');
+      throw FailureException(
+          message: 'Erro ao buscar dados do usuários logado.');
     }
   }
 
@@ -112,14 +110,13 @@ class UserRepositoryImpl implements UserRepository {
     } on RestClientException catch (e, s) {
       _log.error('Erro ao realizar login.', e, s);
       if (e.statusCode == 403) {
-         _log.error('Erro ao realizar login.', e, s);
+        _log.error('Erro ao realizar login.', e, s);
         throw FailureException(
             message: 'Usuário inconsistente entre em contato com o suporte!');
       }
 
-      throw FailureException(message: 'Erro ao realizar login, tente novamente!');
+      throw FailureException(
+          message: 'Erro ao realizar login, tente novamente!');
     }
   }
 }
-
-

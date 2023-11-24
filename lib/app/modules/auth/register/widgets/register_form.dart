@@ -12,12 +12,14 @@ class _RegisterFormState extends State<_RegisterForm> {
   final _formKey = GlobalKey<FormState>();
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
-final controller=Modular.get<RegisterControllerBase>();
+  final _confirmPasswordEC = TextEditingController();
+  final controller = Modular.get<RegisterControllerBase>();
   @override
   void dispose() {
     super.dispose();
     _emailEC.dispose();
     _passwordEC.dispose();
+    _confirmPasswordEC.dispose();
   }
 
   @override
@@ -49,7 +51,6 @@ final controller=Modular.get<RegisterControllerBase>();
           CustomTextformField(
             label: 'Confirmar Senha',
             obscureText: true,
-           
             validator: Validatorless.multiple([
               Validatorless.required('Confirma Senha obrigatória.'),
               Validatorless.min(6, 'Senha deve conter pelo menos 6 digitos.'),
@@ -65,6 +66,8 @@ final controller=Modular.get<RegisterControllerBase>();
                 final email = _emailEC.text;
                 final password = _passwordEC.text;
                 controller.register(email: email, password: password);
+                
+                MessageAlert.alert('Usuário cadastrado com sucesso.');
               }
             },
             borderRadius: 15,

@@ -34,8 +34,7 @@ abstract class LoginControllerBase with Store {
     } on UserNotExistsException {
       const erroMessage = 'Usuário não existe ou não encontrado ';
       MessageAlert.alert(erroMessage);
-      _log.error(erroMessage);
-       
+      _log.error(erroMessage);       
       Loader.hide();
      
     }
