@@ -3,6 +3,7 @@ import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart'
 import 'package:cuidapet_leia/app/core/ui/widgets/custom_butom.dart';
 import 'package:cuidapet_leia/app/core/ui/widgets/custom_textform_field.dart';
 import 'package:cuidapet_leia/app/core/validator.dart';
+import 'package:cuidapet_leia/app/modules/auth/login/widgets/message_alert.dart';
 import 'package:cuidapet_leia/app/modules/auth/register/register_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';

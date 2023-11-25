@@ -12,7 +12,20 @@
           "package_name": "br.com.cl_informatica.cuidapet_leia"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "698734756733-g745fte2lfs8fge6id15rfqqk16ntrd9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "br.com.cl_informatica.cuidapet_leia",
+            "certificate_hash": "2f1820cecfc96500f7decb5d33201e6390d2f74f"
+          }
+        },
+        {
+          "client_id": "698734756733-96bk1i467m6vrr9g8qskti1f6pd0c15l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyCE_43sazQc0589ed36-C5sumCJPdbh_s8"
@@ -20,7 +33,12 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698734756733-96bk1i467m6vrr9g8qskti1f6pd0c15l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

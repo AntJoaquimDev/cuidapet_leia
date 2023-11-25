@@ -1,6 +1,8 @@
+import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
 import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -14,18 +16,26 @@ class HomePage extends StatelessWidget {
       body: Column(
         children: [
           Center(
-          child: Image.asset(
-            'assets/images/logo.png',
-            width: 162.w,
-            height: 130.h,
-            fit: BoxFit.contain,
+            child: Image.asset(
+              'assets/images/logo.png',
+              width: 162.w,
+              height: 130.h,
+              fit: BoxFit.contain,
+            ),
           ),
-        ),
-
-        TextButton(onPressed: () { FirebaseAuth.instance.signOut(); },
-        child:const Text('Logout'))
+          TextButton(
+              onPressed: () async {
+                final categorieResponse =
+                    await Modular.get<RestClient>().auth().get('/categories/');
+                print(categorieResponse);
+              },
+              child: const Text('Teste Refresh_Token')),
+          TextButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              child: const Text('Logout'))
         ],
-        
       ),
     );
   }

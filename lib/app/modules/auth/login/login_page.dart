@@ -1,5 +1,6 @@
 import 'package:cuidapet_leia/app/core/helpers/constants.dart';
 import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
+import 'package:cuidapet_leia/app/models/social_login_type.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/login_controller.dart';
 import 'package:flutter/material.dart';
 
@@ -53,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 8),
               const CustonOrSeparator(),
               const SizedBox(height: 8),
-              const _LoginRegisterButtom()
+               _LoginRegisterButtom()
             ],
           ),
         ),

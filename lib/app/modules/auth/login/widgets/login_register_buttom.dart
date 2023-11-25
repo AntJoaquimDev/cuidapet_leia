@@ -1,7 +1,8 @@
 part of '../login_page.dart';
 
 class _LoginRegisterButtom extends StatelessWidget {
-  const _LoginRegisterButtom();
+  final contrller=Modular.get<LoginController>();
+   _LoginRegisterButtom();
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +13,9 @@ class _LoginRegisterButtom extends StatelessWidget {
       runSpacing: 2,
       children: [
         TextButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            contrller.socialLogin(SocialLoginType.facebook);
+          },
           icon: const Icon(
             CuidapetIcons.facebook,
             color: Color(0xFF4267B3),
@@ -26,7 +29,9 @@ class _LoginRegisterButtom extends StatelessWidget {
           ),
         ),
         TextButton.icon(
-          onPressed: () {},
+          onPressed: () {
+            contrller.socialLogin(SocialLoginType.google);
+          },
           icon: Icon(
             CuidapetIcons.google,
             color: const Color(0xFFE15031),
@@ -42,7 +47,7 @@ class _LoginRegisterButtom extends StatelessWidget {
         ),
         TextButton.icon(
           onPressed: () {
-            Navigator.pushNamed(context, '/auth/register');
+            Navigator.pushNamed(context, '/auth/register/');
           },
           icon: Icon(
             Icons.email,

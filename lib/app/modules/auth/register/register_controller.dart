@@ -26,12 +26,13 @@ abstract class RegisterControllerBase with Store {
       Loader.show();
       await _userService.register(email, password);
       Loader.hide();
+     
+      Modular.to.pop();
     } on UserExisteException {
       Loader.hide();
       MessageAlert.alert('Email já em uso , por favor escolha outro email.');
     } catch (e, s) {
       _log.error('Erro ao Registrar usuário', e, s);
-
       Loader.hide();
       MessageAlert.alert('Erro ao registrar usuário.');
     }

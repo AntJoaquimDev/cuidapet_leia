@@ -3,6 +3,10 @@ import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
 import 'package:cuidapet_leia/app/exceptions/failure_exception.dart';
 import 'package:cuidapet_leia/app/exceptions/user_notexists_exception.dart';
+import 'package:cuidapet_leia/app/models/social_login_type.dart';
+import 'package:cuidapet_leia/app/models/social_network_model.dart';
+import 'package:cuidapet_leia/app/modules/auth/login/widgets/message_alert.dart';
+import 'package:cuidapet_leia/app/repositories/social/social_repository.dart';
 import 'package:cuidapet_leia/app/repositories/user/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -13,16 +17,19 @@ class UserServiceImpl implements UserService {
   final AppLogger _log;
   final LocalStorage _localStorage;
   final LocalSecureStorage _localSecureStoge;
+  final SocialRepository _socialRepository;
 
   UserServiceImpl({
     required UserRepository userRepository,
     required AppLogger log,
     required LocalStorage localStorage,
     required LocalSecureStorage localSecureStoge,
+    required SocialRepository socialRepository,
   })  : _userRepository = userRepository,
         _log = log,
         _localStorage = localStorage,
-        _localSecureStoge = localSecureStoge;
+        _localSecureStoge = localSecureStoge,
+        _socialRepository = socialRepository;
 
   @override
   Future<void> register(String email, String password) async {
@@ -67,6 +74,7 @@ class UserServiceImpl implements UserService {
 
         if (!userVerified) {
           userCredential.user?.sendEmailVerification();
+          MessageAlert.alert('E-mail não confirmado, por favor verifique sua caixa de spam.');
           throw FailureException(
               message:
                   'E-mail não confirmado, por favor verifique sua caixa de spam.');
@@ -100,5 +108,73 @@ class UserServiceImpl implements UserService {
 
     await _localStorage.write<String>(
         Constants.LOCAL_STORAGE_USER_LOGGED_DATA_KEY, userModel.toJson());
+  }
+
+  @override
+  Future<void> socialLogin(SocialLoginType socialLoginType) async {
+    try {
+      final SocialNetworkModel socialModel;
+      final AuthCredential authCredential;
+      final firebaseAuth = FirebaseAuth.instance;
+
+      switch (socialLoginType) {
+        case SocialLoginType.facebook:
+          socialModel = await _socialRepository.facebookLogin();
+          authCredential = FacebookAuthProvider.credential(
+            socialModel.accessToken,
+          );
+          break;
+        case SocialLoginType.google:
+          socialModel = await _socialRepository.googleLogin();
+          authCredential = GoogleAuthProvider.credential(
+            accessToken: socialModel.accessToken,
+           
+          );
+          break;
+      }
+
+      final loginMethods =
+          await firebaseAuth.fetchSignInMethodsForEmail(socialModel.email);
+
+      final methodCheck = _getMethodSocialLoginType(socialLoginType);
+
+      if (loginMethods.isNotEmpty && !loginMethods.contains(methodCheck)) {
+        MessageAlert.alert('Login não pode ser feito por $methodCheck, por favor utilize outro método.');
+        throw FailureException(
+            message:
+                'Login não pode ser feito por $methodCheck, por favor utilize outro método.');
+      }
+      
+      final userCredential =
+          await firebaseAuth.signInWithCredential(authCredential);
+
+      final userVerified = userCredential.user?.emailVerified ?? false;
+
+      if (!userVerified) {
+        userCredential.user?.sendEmailVerification();
+        throw FailureException(
+            message:
+                'E-mail não confirmado, por favor verifique sua caixa de spam.');
+      }
+      await firebaseAuth.signInWithCredential(authCredential);
+      final accessToken = await _userRepository.loginSocial(socialModel);
+      await _saveAccessToken(accessToken);
+      await _confirmLogin();
+      await _getUserData();
+     
+    } on FirebaseAuthException catch (e, s) {
+      _log.error('Erro ao realizar login com $socialLoginType', e, s);
+    
+      throw FailureException(message: 'Erro ao realizar login.');
+    }
+  }
+
+  String _getMethodSocialLoginType(SocialLoginType socialLoginType) {
+    switch (socialLoginType) {
+      case SocialLoginType.facebook:
+        return 'facebook.com';
+      case SocialLoginType.google:
+        return 'google.com';
+    }
   }
 }
