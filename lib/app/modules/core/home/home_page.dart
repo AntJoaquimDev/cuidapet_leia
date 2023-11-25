@@ -1,12 +1,24 @@
+import 'package:cuidapet_leia/app/core/life_cycle/page_life_cicle_state.dart';
 import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
 import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart';
+import 'package:cuidapet_leia/app/modules/core/home/home_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+    const HomePage({super.key, 
 
+  });
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends PageLifeCycleState<HomeController ,HomePage> {
+
+  @override
+  Map<String, dynamic>? get params => {'testes':'testes params'};
   @override
   Widget build(BuildContext context) {
     return Scaffold(

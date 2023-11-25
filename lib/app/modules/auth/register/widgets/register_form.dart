@@ -13,7 +13,7 @@ class _RegisterFormState extends State<_RegisterForm> {
   final _emailEC = TextEditingController();
   final _passwordEC = TextEditingController();
   final _confirmPasswordEC = TextEditingController();
-  final controller = Modular.get<RegisterControllerBase>();
+  final controller = Modular.get<RegisterController>();
   @override
   void dispose() {
     super.dispose();
