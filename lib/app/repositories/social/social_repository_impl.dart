@@ -10,6 +10,7 @@ class SocialRepositoryImpl implements SocialRepository {
   Future<SocialNetworkModel> facebookLogin() async {
     final facebookAuth = FacebookAuth.instance;
     final result = await facebookAuth.login();
+   // print(result.status);
     switch (result.status) {
       case LoginStatus.success:
         final userData = await facebookAuth.getUserData();

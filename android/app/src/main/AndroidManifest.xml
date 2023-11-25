@@ -1,11 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-<manifest package="com.example.app">
-    <queries>
-        <provider android:authorities="com.facebook.katana.provider.PlatformProvider" />
-    </queries>
-    ...
-</manifest>
+
+   
+    <queries> <provider android:authorities="com.facebook.katana.provider.PlatformProvider" /> </queries> 
+    
+
 <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="cuidapet_leia"

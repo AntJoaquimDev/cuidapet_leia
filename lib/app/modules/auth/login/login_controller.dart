@@ -43,9 +43,9 @@ abstract class LoginControllerBase with Store {
   Future<void> socialLogin(SocialLoginType socialLoginType) async {
     try {
       Loader.show();
-      _userService.socialLogin(socialLoginType);
-      Loader.hide();
+     await _userService.socialLogin(socialLoginType);
        Modular.to.navigate('/auth/');
+      Loader.hide();
     } on FailureException catch (e, s) {
       Loader.hide();
       _log.error('Erro ao realizar login', e, s);

@@ -5,6 +5,7 @@ import 'package:cuidapet_leia/app/exceptions/failure_exception.dart';
 import 'package:cuidapet_leia/app/exceptions/user_notexists_exception.dart';
 import 'package:cuidapet_leia/app/models/social_login_type.dart';
 import 'package:cuidapet_leia/app/models/social_network_model.dart';
+import 'package:cuidapet_leia/app/modules/auth/login/widgets/message_alert.dart';
 import 'package:cuidapet_leia/app/repositories/social/social_repository.dart';
 import 'package:cuidapet_leia/app/repositories/user/user_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -73,6 +74,7 @@ class UserServiceImpl implements UserService {
 
         if (!userVerified) {
           userCredential.user?.sendEmailVerification();
+          MessageAlert.alert('E-mail não confirmado, por favor verifique sua caixa de spam.');
           throw FailureException(
               message:
                   'E-mail não confirmado, por favor verifique sua caixa de spam.');
@@ -137,22 +139,23 @@ class UserServiceImpl implements UserService {
       final methodCheck = _getMethodSocialLoginType(socialLoginType);
 
       if (loginMethods.isNotEmpty && !loginMethods.contains(methodCheck)) {
+        MessageAlert.alert('Login não pode ser feito por $methodCheck, por favor utilize outro método.');
         throw FailureException(
             message:
                 'Login não pode ser feito por $methodCheck, por favor utilize outro método.');
       }
       
-      // final userCredential =
-      //     await firebaseAuth.signInWithCredential(authCredential);
+      final userCredential =
+          await firebaseAuth.signInWithCredential(authCredential);
 
-      // final userVerified = userCredential.user?.emailVerified ?? false;
+      final userVerified = userCredential.user?.emailVerified ?? false;
 
-      // if (!userVerified) {
-      //   userCredential.user?.sendEmailVerification();
-      //   throw FailureException(
-      //       message:
-      //           'E-mail não confirmado, por favor verifique sua caixa de spam.');
-      // }
+      if (!userVerified) {
+        userCredential.user?.sendEmailVerification();
+        throw FailureException(
+            message:
+                'E-mail não confirmado, por favor verifique sua caixa de spam.');
+      }
       await firebaseAuth.signInWithCredential(authCredential);
       final accessToken = await _userRepository.loginSocial(socialModel);
       await _saveAccessToken(accessToken);
@@ -161,7 +164,7 @@ class UserServiceImpl implements UserService {
      
     } on FirebaseAuthException catch (e, s) {
       _log.error('Erro ao realizar login com $socialLoginType', e, s);
-     // MessageAlert.alert('Erro ao realizar login com $socialLoginType');
+    
       throw FailureException(message: 'Erro ao realizar login.');
     }
   }
