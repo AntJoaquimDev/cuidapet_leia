@@ -12,7 +12,7 @@ class _LoginFormState extends State<_LoginForm> {
   final _passwordEC = TextEditingController();
   final _formKey = GlobalKey<FormState>();
 
-  final controler=Modular.get<LoginControllerBase>();
+  final controler=Modular.get<LoginController>();
 
 
 @override
