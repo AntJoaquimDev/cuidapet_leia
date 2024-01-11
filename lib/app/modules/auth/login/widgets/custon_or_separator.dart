@@ -15,7 +15,7 @@ class CustonOrSeparator extends StatelessWidget {
           color: context.primaryColor,
         )),
         Padding(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Text(
             'ou',
             style: TextStyle(

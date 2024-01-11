@@ -1,6 +1,15 @@
-import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
+import 'package:cuidapet_leia/app/models/place_model.dart';
+import 'package:cuidapet_leia/app/modules/address/widgets/address_search_widget/address_search_controller.dart';
 import 'package:flutter/material.dart';
+
+import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
+
+import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+
+
 part 'widgets/addres_item.dart';
+part 'widgets/address_search_widget/address_search_widget.dart';
 
 class AddressPage extends StatefulWidget {
   const AddressPage({super.key});
@@ -30,17 +39,8 @@ class _AddressPageState extends State<AddressPage> {
                     ?.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 20),
-              Material(
-                elevation: 10,
-                borderRadius: BorderRadius.circular(20),
-                child: TextFormField(
-                  decoration: InputDecoration(
-                      label: const Text('Inserir um endereço'),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      )),
-                ),
-              ),
+          //    _AddressSearchWidget(addressSelectedCallback: addressSelectedCallback, place: place),
+              
               const SizedBox(height: 20),
               const ListTile(
                 leading: CircleAvatar(
@@ -67,13 +67,7 @@ class _AddressPageState extends State<AddressPage> {
                   _AddresItem(),
                   _AddresItem(),
                   _AddresItem(),
-                  _AddresItem(),
-                  _AddresItem(),
-                  _AddresItem(),
-                  _AddresItem(),
-                  _AddresItem(),
-                  _AddresItem(),
-                  _AddresItem(),
+               
                 ],
               )
             ],

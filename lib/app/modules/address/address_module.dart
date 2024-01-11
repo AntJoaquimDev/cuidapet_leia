@@ -1,4 +1,4 @@
-import 'package:cuidapet_leia/app/core/address/address_page.dart';
+import 'package:cuidapet_leia/app/modules/address/address_page.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AddressModule extends Module {

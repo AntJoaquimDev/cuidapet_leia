@@ -6,5 +6,6 @@ mixin ControllerLifeCycle implements Disposable {
   void onInit([Map<String,dynamic>?params]){}
   void onReady(){}
 
+  @override
   void dispose(){}
 }

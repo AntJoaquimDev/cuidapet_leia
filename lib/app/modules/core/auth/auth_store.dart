@@ -26,7 +26,6 @@ abstract class AuthStoreBase with Store {
 
     if (userModelJson != null) {
       _userLogged = UserModel.fromJson(userModelJson);
-      print(_userLogged);
     } else {
       _userLogged = UserModel.empty();
     }

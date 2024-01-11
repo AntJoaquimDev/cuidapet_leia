@@ -1,10 +1,7 @@
-import 'package:cuidapet_leia/app/core/helpers/constants.dart';
-import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/models/social_login_type.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/login_controller.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cuidapet_leia/app/core/helpers/environments.dart';
 import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart';
 import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_leia/app/core/ui/icons/cuidapet_icons.dart';
@@ -18,9 +15,7 @@ part 'widgets/login_form.dart';
 part 'widgets/login_register_buttom.dart';
 
 class LoginPage extends StatefulWidget {
-   LoginPage({Key? key}) : super(key: key){
-    
-  }
+   const LoginPage({Key? key}) : super(key: key);
 
   @override
   State<LoginPage> createState() => _LoginPageState();

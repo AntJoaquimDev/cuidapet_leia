@@ -13,7 +13,7 @@ class _AddresItem extends StatelessWidget {
           radius: 30,
           child: Icon(Icons.location_on,color: Colors.black,),
         ),
-        title: Text('Av. Pinheiro Machadi 2023'),
+        title: Text('Av. Pinheiro Machado 2023'),
         subtitle: Text('complemento XX'),
       ),
     );

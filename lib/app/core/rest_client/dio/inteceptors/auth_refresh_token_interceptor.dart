@@ -5,7 +5,7 @@ import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/core/logger/app_logger.dart';
 import 'package:cuidapet_leia/app/core/rest_client/dio/rest_client_exception.dart';
 import 'package:cuidapet_leia/app/core/rest_client/rest_client.dart';
-import 'package:cuidapet_leia/app/exceptions/Expire_tokenException.dart';
+import 'package:cuidapet_leia/app/exceptions/expire_token_exception.dart';
 import 'package:cuidapet_leia/app/modules/core/auth/auth_store.dart';
 import 'package:dio/dio.dart';
 
