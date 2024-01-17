@@ -3,13 +3,14 @@ part of '../../address_page.dart';
 typedef AddressSelectedCallback = void Function(PlaceModel);
 
 class _AddressSearchWidget extends StatefulWidget {
-  final AddressSelectedCallback addressSelectedCallback;
-  final PlaceModel? place;
+   final AddressSelectedCallback addressSelectedCallback;
+  // final PlaceModel? place;
 
   const _AddressSearchWidget({
-    
-    required this.addressSelectedCallback,
-    required this.place, required UniqueKey key,
+     Key? key,
+     required this.addressSelectedCallback,
+    // required this.place, 
+    //required UniqueKey key,
   });
 
   @override
@@ -21,14 +22,14 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
   final searchAddressFN = FocusNode();
   final controller = Modular.get<AddressSearchController>();
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.place != null) {
-      searchAddressEC.text = widget.place?.address ?? '';
-      searchAddressFN.requestFocus();
-    }
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   if (widget.place != null) {
+  //     searchAddressEC.text = widget.place?.address ?? '';
+  //     searchAddressFN.requestFocus();
+  //   }
+  // }
 
   @override
   void dispose() {
@@ -55,7 +56,7 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
           focusNode: searchAddressFN,
           decoration: InputDecoration(
             prefixIcon: const Icon(Icons.location_on),
-            hintText: 'Inserir um endereço',
+            hintText: 'Insera um endereço.',
             border: border,
             disabledBorder: border,
             enabledBorder: border,
@@ -74,18 +75,23 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
     if (pattern.isNotEmpty) {
       return controller.searchAddress(pattern);
     }
-
+ 
     return <PlaceModel>[];
   }
 
   void _onSuggestionSelected(PlaceModel suggestion) {
     searchAddressEC.text = suggestion.address;
     widget.addressSelectedCallback(suggestion);
+ 
   }
 
 
 @override
-List<Object?> get props => [searchAddressEC, searchAddressFN, controller];
+List<Object?> get props => [
+  searchAddressEC, 
+  searchAddressFN,
+  // controller,
+   ];
 }
 
 // ignore: must_be_immutable

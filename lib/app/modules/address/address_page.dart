@@ -19,6 +19,7 @@ class AddressPage extends StatefulWidget {
 }
 
 class _AddressPageState extends State<AddressPage> {
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +40,12 @@ class _AddressPageState extends State<AddressPage> {
                     ?.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 20),
-          //    _AddressSearchWidget(addressSelectedCallback: addressSelectedCallback, place: place),
+             _AddressSearchWidget(addressSelectedCallback:  (place){
+               print(place);
+                 Modular.to.pushNamed('/address/detail/',arguments: place);
+             }, 
+             
+             ),
               
               const SizedBox(height: 20),
               const ListTile(
@@ -76,4 +82,7 @@ class _AddressPageState extends State<AddressPage> {
       ),
     );
   }
+
+@override
+List<Object?> get props => [];
 }

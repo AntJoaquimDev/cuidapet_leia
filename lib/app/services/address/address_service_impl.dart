@@ -8,12 +8,15 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'address_service.dart';
 
 class AddressServiceImpl implements AddressService {
-  final AddressRepository _addressRepository;
-  final LocalStorage _localStorage;
+   final AddressRepository _addressRepository;
+  // final LocalStorage _localStorage;
 
-  AddressServiceImpl()
-      : _addressRepository = Modular.get<AddressRepository>(),
-        _localStorage = Modular.get<LocalStorage>();
+  AddressServiceImpl({
+    required AddressRepository addressRepository,
+    //required LocalStorage localStorage,
+  })  : _addressRepository = addressRepository;
+       // _localStorage = localStorage;
+
   @override
   Future<void> deleteAll() {
     // TODO: implement deleteAll

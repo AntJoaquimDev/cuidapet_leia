@@ -8,13 +8,13 @@ import 'package:google_places/google_places.dart';
 import 'address_repository.dart';
 
 class AddressRepositoryImpl implements AddressRepository {
-   final SqliteConnectionFactory _sqliteConnectionFactory;
+  // final SqliteConnectionFactory _sqliteConnectionFactory;
 
 
 
-  const AddressRepositoryImpl({
-    required SqliteConnectionFactory sqliteConnectionFactory,
-  }) : _sqliteConnectionFactory = sqliteConnectionFactory;
+  // const AddressRepositoryImpl({
+  //   required SqliteConnectionFactory sqliteConnectionFactory,
+  // }) //: _sqliteConnectionFactory = sqliteConnectionFactory;
   @override
   Future<List<PlaceModel>> findAddressByGooglePlaces(String addressPattern)async {
     final googleApiKey = Environments.param('google_api_key');
@@ -56,8 +56,9 @@ class AddressRepositoryImpl implements AddressRepository {
   }
   @override
   Future<void> deleteAll()async {
-    final sqliteConn = await _sqliteConnectionFactory.openConnection();
-    await sqliteConn.delete('address');
+    // final sqliteConn = await _sqliteConnectionFactory.openConnection();
+    // await sqliteConn.delete('address');
+  
   }
 
 }
