@@ -1,3 +1,4 @@
+import 'package:cuidapet_leia/app/core/database/sqlite_connection_factory.dart';
 import 'package:cuidapet_leia/app/models/place_model.dart';
 import 'package:cuidapet_leia/app/modules/address/widgets/address_search_widget/address_search_controller.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ class _AddressPageState extends State<AddressPage> {
   
   @override
   Widget build(BuildContext context) {
+    Modular.get<SqliteConnectionFactory>().openConnection();
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: context.primaryColor),

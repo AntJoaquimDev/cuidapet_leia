@@ -9,7 +9,10 @@ class SqliteMigrationFactory {
   List<Migration> getUpdateMigrations(int version) {
     /*
     if version....
-    */
+   
+    if(version =2){
+return [v1,v2]
+    } */
     return [];
   }
 }

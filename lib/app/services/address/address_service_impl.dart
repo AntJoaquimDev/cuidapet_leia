@@ -9,13 +9,13 @@ import 'address_service.dart';
 
 class AddressServiceImpl implements AddressService {
    final AddressRepository _addressRepository;
-  // final LocalStorage _localStorage;
+   final LocalStorage _localStorage;
 
   AddressServiceImpl({
     required AddressRepository addressRepository,
-    //required LocalStorage localStorage,
-  })  : _addressRepository = addressRepository;
-       // _localStorage = localStorage;
+    required LocalStorage localStorage,
+  })  : _addressRepository = addressRepository,
+        _localStorage = localStorage;
 
   @override
   Future<void> deleteAll() {

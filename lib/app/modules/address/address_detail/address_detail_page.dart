@@ -1,6 +1,7 @@
 import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart';
 import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_leia/app/core/ui/widgets/custom_butom.dart';
+import 'package:cuidapet_leia/app/entities/address_entity.dart';
 import 'package:cuidapet_leia/app/models/place_model.dart';
 import 'package:cuidapet_leia/app/modules/address/address_detail/address_detail_controller.dart';
 import 'package:flutter/material.dart';
@@ -18,8 +19,25 @@ class AddressDetailPage extends StatefulWidget {
 
 class _AddressDetailPageState extends State<AddressDetailPage> {
   final _additionalEC = TextEditingController();
-  //final controller = Modular.get<AddressDetailController>();
-  //late final ReactionDisposer addressEntityDisposer;
+  final controller = Modular.get<AddressDetailController>();
+  late final ReactionDisposer addressEntityDisposer;
+
+@override
+  void initState() {
+    super.initState();
+    addressEntityDisposer=reaction((_) => controller.addressEntity, (addressEntity) {
+      if(addressEntity!=null){
+        Navigator.pop(context,addressEntity);
+      }
+     });
+  }
+
+  @override
+  void dispose() {
+    _additionalEC.dispose();
+    addressEntityDisposer();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -72,21 +90,22 @@ class _AddressDetailPageState extends State<AddressDetailPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                readOnly: true,
+                controller: _additionalEC,
                 decoration: const InputDecoration(
                   labelText: 'Complemento',
                   suffixIcon: Icon(Icons.edit),
                 ),
               ),
             ),
-            
             SizedBox(
               width: .9.sw,
               height: 60.h,
-              child: CustomButom(onPressed: () {}, label: 'Salva'),
+              child: CustomButom(onPressed: () {
+                controller.saveAddress(widget.place,_additionalEC.text );
+              }, label: 'Salva'),
             ),
-           const SizedBox(
-               height: 20,
+            const SizedBox(
+              height: 20,
             ),
           ],
         ));
