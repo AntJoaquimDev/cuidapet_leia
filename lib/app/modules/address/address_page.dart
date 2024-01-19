@@ -47,12 +47,13 @@ class _AddressPageState
               const SizedBox(height: 20),
               _AddressSearchWidget(
                 addressSelectedCallback: (place) {
-                  Modular.to.pushNamed('/address/detail/', arguments: place);
+                  controller.goToAddressDetail(place);
                 },
               ),
               const SizedBox(height: 20),
-              const ListTile(
-                leading: CircleAvatar(
+               ListTile(
+                onTap: ()=> controller.myLocation(),
+                leading: const CircleAvatar(
                   backgroundColor: Colors.red,
                   radius: 30,
                   child: Icon(
@@ -60,11 +61,12 @@ class _AddressPageState
                     color: Colors.white,
                   ),
                 ),
-                title: Text(
+                title: const Text(
                   'Localização atual.',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
-                trailing: Icon(Icons.arrow_forward_ios),
+                trailing: const Icon(Icons.arrow_forward_ios),
+                
               ),
               const SizedBox(height: 20),
               Observer(builder: (_) {
