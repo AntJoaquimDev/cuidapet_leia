@@ -4,12 +4,12 @@ typedef AddressSelectedCallback = void Function(PlaceModel);
 
 class _AddressSearchWidget extends StatefulWidget {
    final AddressSelectedCallback addressSelectedCallback;
-  // final PlaceModel? place;
+  //final PlaceModel? placeModel;
 
   const _AddressSearchWidget({
      Key? key,
      required this.addressSelectedCallback,
-    // required this.place, 
+    // required this.placeModel, 
     //required UniqueKey key,
   });
 
@@ -22,11 +22,11 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
   final searchAddressFN = FocusNode();
   final controller = Modular.get<AddressSearchController>();
 
-  // @override
+  @override
   // void initState() {
   //   super.initState();
-  //   if (widget.place != null) {
-  //     searchAddressEC.text = widget.place?.address ?? '';
+  //   if (widget.placeModel != null) {
+  //     searchAddressEC.text = widget.placeModel?.address ?? '';
   //     searchAddressFN.requestFocus();
   //   }
   // }
@@ -63,7 +63,7 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
           ),
         ),
         itemBuilder: (_, item) {
-          return _ItemTile(item.address);
+          return _ItemTile(address: item.address,);
         },
         onSuggestionSelected: _onSuggestionSelected,
         suggestionsCallback: _suggestionsCallbac,
@@ -86,18 +86,23 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
   }
 
 
-@override
-List<Object?> get props => [
-  searchAddressEC, 
-  searchAddressFN,
-  // controller,
-   ];
+// @override
+// List<Object?> get props => [
+//   searchAddressEC, 
+//   searchAddressFN,
+//    controller,
+//    ];
 }
 
 // ignore: must_be_immutable
 class _ItemTile extends StatelessWidget {
-  String address;
-  _ItemTile(this.address);
+  
+   String address;
+  _ItemTile({
+    required this.address
+  });
+ 
+ 
 
   @override
   Widget build(BuildContext context) {

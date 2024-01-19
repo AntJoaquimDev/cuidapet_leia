@@ -27,9 +27,8 @@ class CoreModule extends Module {
     Bind.lazySingleton<LocalStorage>((i) => SharedPreferencesLocalStorageImpl(), export: true),
     Bind.lazySingleton<LocalSecureStorage>((i) => FlutterSecureStoreLocalStorageImpl (), export: true),
     Bind.lazySingleton((i) => AuthStore(localStorage: i()),export: true),
-    Bind.lazySingleton<AddressRepository>((i) => AddressRepositoryImpl(),export: true),
     Bind.lazySingleton<RestClient>((i) => DioRestClient(localStorage: i(),log: i(),authStore: i(),localSecureStorage: i()),export: true),
-    Bind.lazySingleton<AddressRepository>((i) => AddressRepositoryImpl(),export: true),
+    Bind.lazySingleton<AddressRepository>((i) => AddressRepositoryImpl(sqliteConnectionFactory: i()),export: true),
     Bind.lazySingleton<AddressService>((i) => AddressServiceImpl(addressRepository: i(),localStorage: i()),export: true),// localStorage: i()
 
   ];

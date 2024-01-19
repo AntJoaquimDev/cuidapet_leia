@@ -6,8 +6,9 @@ import 'package:flutter_modular/flutter_modular.dart';
 class AddressDetailModule extends Module{
 
    @override
-   List<Bind>  binds = [
-    Bind.lazySingleton((i) => AddressDetailController(addressService: i())),
+   List<Bind<Object>> get binds => [
+    //Bind.lazySingleton((i) => AddressDetailController(addressService: i())),
+    Bind.lazySingleton((i) => AddressDetailController()),
    ];
 
    @override

@@ -1,7 +1,6 @@
 import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart';
 import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_leia/app/core/ui/widgets/custom_butom.dart';
-import 'package:cuidapet_leia/app/entities/address_entity.dart';
 import 'package:cuidapet_leia/app/models/place_model.dart';
 import 'package:cuidapet_leia/app/modules/address/address_detail/address_detail_controller.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +24,8 @@ class _AddressDetailPageState extends State<AddressDetailPage> {
 @override
   void initState() {
     super.initState();
-    addressEntityDisposer=reaction((_) => controller.addressEntity, (addressEntity) {
+    addressEntityDisposer =
+     reaction((_) => controller.addressEntity, (addressEntity) {
       if(addressEntity!=null){
         Navigator.pop(context,addressEntity);
       }
@@ -66,7 +66,7 @@ class _AddressDetailPageState extends State<AddressDetailPage> {
                 ),
                 markers: {
                   Marker(
-                      markerId: MarkerId('AddressId'),
+                      markerId: const MarkerId('AddressId'),
                       position: LatLng(
                         widget.place.lat,
                         widget.place.lng,

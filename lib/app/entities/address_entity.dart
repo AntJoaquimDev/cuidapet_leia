@@ -30,8 +30,8 @@ class AddressEntity {
     return AddressEntity(
       id: map['id']?.toInt(),
       address: map['address'] ?? '',
-      lat: map['lat']?.toDouble() ?? 0.0,
-      lng: map['lng']?.toDouble() ?? 0.0,
+      lat: double.parse(map['lat'] ?? 0.0,),
+      lng: double.parse(map['lng'] ?? 0.0,),
       additional: map['additional'] ?? '',
     );
   }
@@ -39,4 +39,20 @@ class AddressEntity {
   String toJson() => json.encode(toMap());
 
   factory AddressEntity.fromJson(String source) => AddressEntity.fromMap(json.decode(source));
+AddressEntity copyWith({
+    int? id,
+    String? address,
+    double? lat,
+    double? lng,
+    String? additional,
+  }) {
+    return AddressEntity(
+      id: id ?? this.id,
+      address: address ?? this.address,
+      lat: lat ?? this.lat,
+      lng: lng ?? this.lng,
+      additional: additional ?? this.additional,
+    );
+  }
 }
+

@@ -15,15 +15,17 @@ abstract class AddressDetailControllerBase with Store {
   @readonly
   AddressEntity? _addressEntity;
 
-  AddressDetailControllerBase({
-    required AddressService addressService})
-      : _addressService = addressService;
+  // AddressDetailControllerBase({
+  //   required AddressService addressService})
+  //     : _addressService = addressService;
+   AddressDetailControllerBase()
+      : _addressService = Modular.get<AddressService>();
 
       Future<void>saveAddress(PlaceModel placeModel,String additional)async{
 
-        //Loader.show();
-        final addressEntity=await _addressService.saveAddress(placeModel, additional);
-        //Loader.hide();
+        Loader.show();
+        final addressEntity = await _addressService.saveAddress(placeModel, additional);
+        Loader.hide();
          _addressEntity = addressEntity;
        
       }

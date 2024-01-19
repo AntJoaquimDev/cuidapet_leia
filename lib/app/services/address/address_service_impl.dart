@@ -8,8 +8,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'address_service.dart';
 
 class AddressServiceImpl implements AddressService {
-   final AddressRepository _addressRepository;
-   final LocalStorage _localStorage;
+  final AddressRepository _addressRepository;
+  final LocalStorage _localStorage;
 
   AddressServiceImpl({
     required AddressRepository addressRepository,
@@ -29,8 +29,7 @@ class AddressServiceImpl implements AddressService {
 
   @override
   Future<List<AddressEntity>> getAddress() {
-    // TODO: implement getAddress
-    throw UnimplementedError();
+   return _addressRepository.getAddress();
   }
 
   @override
@@ -40,11 +39,17 @@ class AddressServiceImpl implements AddressService {
   }
 
   @override
-  Future<AddressEntity> saveAddress(PlaceModel placeModel, String additional) {
-    // TODO: implement saveAddress
-    throw UnimplementedError();
+  Future<AddressEntity> saveAddress(PlaceModel placeModel, String additional)async {
+    final addressEntity = AddressEntity(
+      address: placeModel.address,
+      lat: placeModel.lat,
+      lng: placeModel.lng,
+      additional: additional,
+    );
+    var addressId = await _addressRepository.saveAddress(addressEntity);
+    return addressEntity.copyWith(id: addressId);
   }
-  
+
   @override
   Future<void> selectAddress(AddressEntity addressEntity) {
     // TODO: implement selectAddress
