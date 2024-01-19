@@ -1,5 +1,4 @@
 import 'package:asuka/asuka.dart' as asuka;
-import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
 class Loader {

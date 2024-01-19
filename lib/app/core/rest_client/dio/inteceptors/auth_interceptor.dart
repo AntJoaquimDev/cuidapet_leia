@@ -1,14 +1,13 @@
 import 'package:cuidapet_leia/app/modules/core/auth/auth_store.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 import 'package:cuidapet_leia/app/core/helpers/constants.dart';
 import 'package:dio/dio.dart';
 
 import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 
-@JsonSerializable()
+
 class AuthInterceptors extends Interceptor {
-  LocalStorage _localStorage;
+  final LocalStorage _localStorage;
   final AuthStore _authStore;
 
   AuthInterceptors({

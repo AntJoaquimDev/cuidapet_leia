@@ -10,6 +10,7 @@ class Validator {
       if (value == null || (value != null && value != valueCompare)) {
         return message;
       }
+      return null;
     };
   }
 }

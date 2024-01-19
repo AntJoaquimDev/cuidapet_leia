@@ -33,7 +33,7 @@ dependencies:
 
 
     
-  flutter_modular: ^5.0.0
+  flutter_modular: ^5.0.2
   mobx: ^2.2.0
   flutter_mobx: ^2.1.0
   asuka: ^2.2.0
@@ -59,7 +59,19 @@ dependencies:
   geocoding: ^2.1.0
   intl: ^0.18.1
   url_launcher: ^6.1.12
+  flutter_typeahead: ^4.6.2
+  google_places:
+    git:
+      url: https://github.com/caneto/google_place.git
+      ref: main 
+   
+  
  
+  
+  
+  
+  
+  
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
