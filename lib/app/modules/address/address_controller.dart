@@ -42,6 +42,7 @@ abstract class AddressControllerBase with Store, ControllerLifeCycle {
 
   @action
   Future<void> myLocation() async {
+    _locationPermission=null;
     final serviceEnable = await Geolocator.isLocationServiceEnabled();
 
     if (!serviceEnable) {
