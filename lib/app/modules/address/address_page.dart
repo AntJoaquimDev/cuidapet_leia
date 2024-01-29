@@ -1,5 +1,6 @@
 import 'package:cuidapet_leia/app/core/database/sqlite_connection_factory.dart';
 import 'package:cuidapet_leia/app/core/life_cycle/page_life_cicle_state.dart';
+import 'package:cuidapet_leia/app/core/mixins/location_mixin.dart';
 import 'package:cuidapet_leia/app/models/place_model.dart';
 import 'package:cuidapet_leia/app/modules/address/address_controller.dart';
 import 'package:cuidapet_leia/app/modules/address/widgets/address_search_widget/address_search_controller.dart';
@@ -9,6 +10,7 @@ import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_places/google_places.dart';
 import 'package:mobx/mobx.dart';
 
@@ -23,7 +25,32 @@ class AddressPage extends StatefulWidget {
 }
 
 class _AddressPageState
-    extends PageLifeCycleState<AddressController, AddressPage> {
+    extends PageLifeCycleState<AddressController, AddressPage>with LocationMixin {
+final reactionDiposers = <ReactionDisposer>[];
+       @override
+  void initState() {
+    super.initState();
+
+    final reactionService =
+        reaction<bool>((_) => controller.locationServiceUnavailable,
+            (locationServiceUnavailable) {
+      if (locationServiceUnavailable) {
+        showDialogLocationServiceUnavailable();
+      }
+    });
+    final reactionLocationPermission = reaction<LocationPermission?>(
+        (_) => controller.locationPermission, (locationPermission) {
+      if (locationPermission != null &&
+          locationPermission == LocationPermission.denied) {
+        showDialogLocationDenied(tryAgain: () => controller.myLocation());
+      } else if (locationPermission != null &&
+          locationPermission == LocationPermission.deniedForever) {
+        showDialogLocationDeniedForever();
+      }
+    });
+
+    reactionDiposers.addAll([reactionService, reactionLocationPermission]);
+  }
   @override
   Widget build(BuildContext context) {
     Modular.get<SqliteConnectionFactory>().openConnection();
