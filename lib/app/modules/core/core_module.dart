@@ -1,4 +1,3 @@
-
 import 'package:cuidapet_leia/app/core/database/sqlite_connection_factory.dart';
 import 'package:cuidapet_leia/app/core/local_stoge/flutter_secure_store/flutter_secure_store_local_storage_impl.dart';
 import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
@@ -16,23 +15,35 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'auth/auth_store.dart';
 
 class CoreModule extends Module {
-
   @override
-  List<Bind>   binds = [
+  List<Bind> binds = [
+    Bind.lazySingleton((i) => SqliteConnectionFactory(), export: true),
+    Bind.lazySingleton((i) => AppLoggerImpl(), export: true),
 
-
-    Bind.lazySingleton((i) => SqliteConnectionFactory(),export: true),
-    Bind.lazySingleton((i) => AppLoggerImpl(),export: true),
-    
-    Bind.lazySingleton<LocalStorage>((i) => SharedPreferencesLocalStorageImpl(), export: true),
-    Bind.lazySingleton<LocalSecureStorage>((i) => FlutterSecureStoreLocalStorageImpl (), export: true),
-    Bind.lazySingleton((i) => AuthStore(localStorage: i()),export: true),
-    Bind.lazySingleton<RestClient>((i) => DioRestClient(localStorage: i(),log: i(),authStore: i(),localSecureStorage: i()),export: true),
-    Bind.lazySingleton<AddressRepository>((i) => AddressRepositoryImpl(sqliteConnectionFactory: i()),export: true),
-    Bind.lazySingleton<AddressService>((i) => AddressServiceImpl(addressRepository: i(),localStorage: i()),export: true),// localStorage: i()
-
+    Bind.lazySingleton<LocalStorage>((i) => SharedPreferencesLocalStorageImpl(),
+        export: true),
+    Bind.lazySingleton<LocalSecureStorage>(
+        (i) => FlutterSecureStoreLocalStorageImpl(),
+        export: true),
+    Bind.lazySingleton(
+        (i) => AuthStore(
+              localStorage: i(),
+              localSecureStorage: i(),
+              addressService: i(),
+            ),
+        export: true),
+    Bind.lazySingleton<RestClient>(
+        (i) => DioRestClient(
+            localStorage: i(),
+            log: i(),
+            authStore: i(),
+            localSecureStorage: i()),
+        export: true),
+    Bind.lazySingleton<AddressRepository>(
+        (i) => AddressRepositoryImpl(sqliteConnectionFactory: i()),
+        export: true),
+    Bind.lazySingleton<AddressService>(
+        (i) => AddressServiceImpl(addressRepository: i(), localStorage: i()),
+        export: true), // localStorage: i()
   ];
-  
-
-
 }

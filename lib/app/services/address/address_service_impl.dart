@@ -19,10 +19,9 @@ class AddressServiceImpl implements AddressService {
         _localStorage = localStorage;
 
   @override
-  Future<void> deleteAll() {
-    // TODO: implement deleteAll
-    throw UnimplementedError();
-  }
+  Future<void> deleteAll() =>_addressRepository.deleteAll();
+  
+  
 
   @override
   Future<List<PlaceModel>> findAddressByGooglePlaces(String addressPattern) =>
