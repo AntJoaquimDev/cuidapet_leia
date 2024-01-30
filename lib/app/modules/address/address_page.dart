@@ -28,9 +28,10 @@ class _AddressPageState
     extends PageLifeCycleState<AddressController, AddressPage>with LocationMixin {
 final reactionDiposers = <ReactionDisposer>[];
        @override
+  
   void initState() {
+    
     super.initState();
-
     final reactionService =
         reaction<bool>((_) => controller.locationServiceUnavailable,
             (locationServiceUnavailable) {
@@ -38,6 +39,9 @@ final reactionDiposers = <ReactionDisposer>[];
         showDialogLocationServiceUnavailable();
       }
     });
+
+
+
     final reactionLocationPermission = reaction<LocationPermission?>(
         (_) => controller.locationPermission, (locationPermission) {
       if (locationPermission != null &&
@@ -72,11 +76,20 @@ final reactionDiposers = <ReactionDisposer>[];
                     ?.copyWith(color: Colors.black),
               ),
               const SizedBox(height: 20),
-              _AddressSearchWidget(
-                addressSelectedCallback: (place) {
-                  controller.goToAddressDetail(place);
-                },
+             
+              Observer(
+                  builder: (_) {
+
+                      return _AddressSearchWidget(
+                        key: UniqueKey(),
+                              addressSelectedCallback: (place) {
+                                controller.goToAddressDetail(place);
+                              }, 
+                              placeModel: controller.placeModel,
+                            );
+                  },
               ),
+             
               const SizedBox(height: 20),
                ListTile(
                 onTap: ()=> controller.myLocation(),
