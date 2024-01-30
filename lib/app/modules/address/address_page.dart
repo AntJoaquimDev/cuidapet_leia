@@ -112,7 +112,10 @@ final reactionDiposers = <ReactionDisposer>[];
               Observer(builder: (_) {
                 return Column(
                     children: controller.addresses
-                        .map((a) => _ItemTile(address: a.address,onTap: () {
+                        .map((a) => _AddresItem(
+                          address: a.address,
+                          additional: a.additional,
+                          onTap: () {
                           controller.selectAddress(a);
                         },))
                         .toList());
