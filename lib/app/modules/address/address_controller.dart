@@ -90,6 +90,8 @@ goToAddressDetail(placeModel);
 
    if (address is PlaceModel) {
      _placeModel =address;
+   }else if(address is AddressEntity){
+    selectAddress(address);
    }
   }
 

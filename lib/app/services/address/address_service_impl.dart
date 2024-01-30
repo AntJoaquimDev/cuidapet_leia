@@ -1,3 +1,4 @@
+import 'package:cuidapet_leia/app/core/helpers/constants.dart';
 import 'package:cuidapet_leia/app/core/local_stoge/local_storage.dart';
 import 'package:cuidapet_leia/app/entities/address_entity.dart';
 
@@ -29,17 +30,30 @@ class AddressServiceImpl implements AddressService {
 
   @override
   Future<List<AddressEntity>> getAddress() {
-   return _addressRepository.getAddress();
+    return _addressRepository.getAddress();
   }
 
   @override
-  Future<AddressEntity?> getAddressSelected() {
-    // TODO: implement getAddressSelected
-    throw UnimplementedError();
+  Future<AddressEntity?> getAddressSelected() async {
+    final addressJson = await _localStorage
+        .read(Constants.LOCAL_STORAGE_USER_DEFAULT_ADDRESS_DATA_KEY);
+
+    if (addressJson != null) {
+      return AddressEntity.fromJson(addressJson);
+    }
+    return null;
   }
 
   @override
-  Future<AddressEntity> saveAddress(PlaceModel placeModel, String additional)async {
+  Future<void> selectAddress(AddressEntity addressEntity) async {
+    await _localStorage.write(
+        Constants.LOCAL_STORAGE_USER_DEFAULT_ADDRESS_DATA_KEY,
+        addressEntity.toJson());
+  }
+
+  @override
+  Future<AddressEntity> saveAddress(
+      PlaceModel placeModel, String additional) async {
     final addressEntity = AddressEntity(
       address: placeModel.address,
       lat: placeModel.lat,
@@ -48,11 +62,5 @@ class AddressServiceImpl implements AddressService {
     );
     var addressId = await _addressRepository.saveAddress(addressEntity);
     return addressEntity.copyWith(id: addressId);
-  }
-
-  @override
-  Future<void> selectAddress(AddressEntity addressEntity) {
-    // TODO: implement selectAddress
-    throw UnimplementedError();
   }
 }
