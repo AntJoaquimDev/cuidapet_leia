@@ -89,7 +89,7 @@ goToAddressDetail(placeModel);
    final address = await Modular.to.pushNamed('/address/detail/', arguments: place);
 
    if (address is PlaceModel) {
-     _placeModel =address;
+     _placeModel = address;
    }else if(address is AddressEntity){
     selectAddress(address);
    }

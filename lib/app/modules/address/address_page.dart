@@ -25,12 +25,11 @@ class AddressPage extends StatefulWidget {
 }
 
 class _AddressPageState
-    extends PageLifeCycleState<AddressController, AddressPage>with LocationMixin {
-final reactionDiposers = <ReactionDisposer>[];
-       @override
-  
+    extends PageLifeCycleState<AddressController, AddressPage>
+    with LocationMixin {
+  final reactionDiposers = <ReactionDisposer>[];
+  @override
   void initState() {
-    
     super.initState();
     final reactionService =
         reaction<bool>((_) => controller.locationServiceUnavailable,
@@ -39,8 +38,6 @@ final reactionDiposers = <ReactionDisposer>[];
         showDialogLocationServiceUnavailable();
       }
     });
-
-
 
     final reactionLocationPermission = reaction<LocationPermission?>(
         (_) => controller.locationPermission, (locationPermission) {
@@ -55,76 +52,86 @@ final reactionDiposers = <ReactionDisposer>[];
 
     reactionDiposers.addAll([reactionService, reactionLocationPermission]);
   }
+@override
+  void dispose() {
+
+    for(var reaction in reactionDiposers){
+      reaction();
+    }
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
-    Modular.get<SqliteConnectionFactory>().openConnection();
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: IconThemeData(color: context.primaryColor),
+    //Modular.get<SqliteConnectionFactory>().openConnection();
+    return WillPopScope(
+      onWillPop: ()=>controller.addressWasSelect(),
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: IconThemeData(color: context.primaryColor),
+          backgroundColor: Colors.white,
+          elevation: 0,
+        ),
         backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(13.0),
-          child: Column(
-            children: [
-              Text(
-                'Adicione ou escolha um endereço',
-                style: context.textTheme.headlineMedium
-                    ?.copyWith(color: Colors.black),
-              ),
-              const SizedBox(height: 20),
-             
-              Observer(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(13.0),
+            child: Column(
+              children: [
+                Text(
+                  'Adicione ou escolha um endereço',
+                  style: context.textTheme.headlineMedium
+                      ?.copyWith(color: Colors.black),
+                ),
+                const SizedBox(height: 20),
+                Observer(
                   builder: (_) {
-
-                      return _AddressSearchWidget(
-                        key: UniqueKey(),
-                              addressSelectedCallback: (place) {
-                                controller.goToAddressDetail(place);
-                              }, 
-                              placeModel: controller.placeModel,
-                            );
+                    return _AddressSearchWidget(
+                      key: UniqueKey(),
+                      addressSelectedCallback: (place) {
+                        controller.goToAddressDetail(place);
+                      },
+                      placeModel: controller.placeModel,
+                    );
                   },
-              ),
-             
-              const SizedBox(height: 20),
-               ListTile(
-                onTap: ()=> controller.myLocation(),
-                leading: const CircleAvatar(
-                  backgroundColor: Colors.red,
-                  radius: 30,
-                  child: Icon(
-                    Icons.near_me,
-                    color: Colors.white,
+                ),
+                const SizedBox(height: 20),
+                ListTile(
+                  onTap: () => controller.myLocation(),
+                  leading: const CircleAvatar(
+                    backgroundColor: Colors.red,
+                    radius: 30,
+                    child: Icon(
+                      Icons.near_me,
+                      color: Colors.white,
+                    ),
                   ),
+                  title: const Text(
+                    'Localização atual.',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                  ),
+                  trailing: const Icon(Icons.arrow_forward_ios),
                 ),
-                title: const Text(
-                  'Localização atual.',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                ),
-                trailing: const Icon(Icons.arrow_forward_ios),
-                
-              ),
-              const SizedBox(height: 20),
-              Observer(builder: (_) {
-                return Column(
-                    children: controller.addresses
-                        .map((a) => _AddresItem(
-                          address: a.address,
-                          additional: a.additional,
-                          onTap: () {
-                          controller.selectAddress(a);
-                        },))
-                        .toList());
-              }),
-              
-            ],
+                const SizedBox(height: 20),
+                Observer(builder: (_) {
+                  return Column(
+                      children: controller.addresses
+                          .map((a) => _AddresItem(
+                                address: a.address,
+                                additional: a.additional,
+                                onTap: () {
+                                  controller.selectAddress(a);
+                                },
+                              ))
+                          .toList());
+                }),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
+@override
+List<Object?> get props => [reactionDiposers];
 }
