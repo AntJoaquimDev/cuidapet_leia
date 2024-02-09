@@ -1,11 +1,15 @@
 import 'package:cuidapet_leia/app/core/life_cycle/page_life_cicle_state.dart';
-import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart';
+import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_leia/app/entities/address_entity.dart';
+import 'package:cuidapet_leia/app/exceptions/supplier_category_model.dart';
 import 'package:cuidapet_leia/app/modules/core/home/home_controller.dart';
-import 'package:cuidapet_leia/app/services/address/address_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cuidapet_leia/app/modules/core/home/widgets/home_appbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_modular/flutter_modular.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:path/path.dart';
+
+part 'widgets/home_address_widgets.dart';
+part 'widgets/home_categories_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({
@@ -24,49 +28,23 @@ class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
-      body: Column(
-        children: [
-          Center(
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: 162.w,
-              height: 130.h,
-              fit: BoxFit.contain,
-            ),
-          ),
-          TextButton(
-              onPressed: () async {
-                // final categorieResponse =
-                //     await Modular.get<RestClient>().auth().get('/categories/');
-              },
-              child: const Text('Teste Refresh_Token')),
-          TextButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              child: const Text('Logout')),
-          TextButton(
-              onPressed: () async {
-                await Modular.to.pushNamed('/address/');
-              },
-              child: const Text('Ir para Endereço.')),
-          TextButton(
-              onPressed: () async {
-                final address =
-                    await Modular.get<AddressService>().getAddressSelected();
-               setState(() {
-                  addressEntity = address;
-               });
-              },
-              child: const Text('Busrcar Endereço.')),
-
-              Text(addressEntity?.address ?? 'Nenhum endereço selecionado'),
-              Center(child: Text(addressEntity?.additional ?? 'Nenhum complemento selecionado')),
-        ],
-      ),
-    );
+        drawer: const Drawer(),
+        backgroundColor: Colors.grey[100],
+        body: NestedScrollView(
+          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+            return <Widget>[
+              HomeAppBar(controller),
+              SliverToBoxAdapter(
+                child: _HomeAddressWidgets(
+                  controller: controller,
+                ),
+              ), SliverToBoxAdapter(
+              child: _HomeCategoriesWidget(
+                controller: controller,
+              ),),
+            ];
+          },
+          body: Container(),
+        ));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cuidapet_leia/app/core/life_cycle/controller_life_cycle.dart';
 import 'package:cuidapet_leia/app/entities/address_entity.dart';
+import 'package:cuidapet_leia/app/exceptions/supplier_category_model.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/widgets/loader.dart';
 import 'package:cuidapet_leia/app/services/address/address_service.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +20,9 @@ HomeControllerBase({ required AddressService addressService,
 
   @readonly
   AddressEntity? _addressEntity;
-  
+  @readonly
+  var _listCategories = <SupplierCategoryModel>[];
+
   @override
   void onReady() async {
     
