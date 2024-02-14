@@ -45,6 +45,26 @@ mixin _$HomeController on HomeControllerBase, Store {
     });
   }
 
+  late final _$_listSupplierByAddressAtom =
+      Atom(name: 'HomeControllerBase._listSupplierByAddress', context: context);
+
+  List<SupplierNearbyMeModel> get listSupplierByAddress {
+    _$_listSupplierByAddressAtom.reportRead();
+    return super._listSupplierByAddress;
+  }
+
+  @override
+  List<SupplierNearbyMeModel> get _listSupplierByAddress =>
+      listSupplierByAddress;
+
+  @override
+  set _listSupplierByAddress(List<SupplierNearbyMeModel> value) {
+    _$_listSupplierByAddressAtom
+        .reportWrite(value, super._listSupplierByAddress, () {
+      super._listSupplierByAddress = value;
+    });
+  }
+
   late final _$_supplierPageTypeSelectedAtom = Atom(
       name: 'HomeControllerBase._supplierPageTypeSelected', context: context);
 

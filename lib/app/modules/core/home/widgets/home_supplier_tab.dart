@@ -17,7 +17,7 @@ class _HomeSupplierTab extends StatelessWidget {
                 duration: const Duration(microseconds: 400),
                 child: homeController.supplierPageTypeSelected ==
                         SupplierPageType.list
-                    ? const _HomeSupplierList()
+                    ? _HomeSupplierList(homeController)
                     : const _HomeSupplierGrid(),
               );
             },
@@ -30,9 +30,7 @@ class _HomeSupplierTab extends StatelessWidget {
 
 class _HomeTabHeader extends StatelessWidget {
   final HomeController homeController;
-  const _HomeTabHeader({
-    required this.homeController,
-  });
+  const _HomeTabHeader({required this.homeController});
 
   @override
   Widget build(BuildContext context) {
@@ -81,37 +79,45 @@ class _HomeSupplierGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverList(delegate: SliverChildBuilderDelegate(
+        SliverList(
+            delegate: SliverChildBuilderDelegate(
           childCount: 10,
-          (context, index) =>Text('Suplier Grid') ,)
-        ),
+          (context, index) => Text('Suplier Grid'),
+        )),
       ],
     );
   }
 }
 
 class _HomeSupplierList extends StatelessWidget {
-  const _HomeSupplierList({super.key});
+  final HomeController _homeController;
+  const _HomeSupplierList(this._homeController);
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverList(delegate: SliverChildBuilderDelegate(
-          childCount: 10,
-          (context, index) => _HomeSupplierListItemWidget() ,)
-        ),
+        Observer(
+            builder: (_) {
+                return SliverList(
+                  delegate: SliverChildBuilderDelegate(
+                    childCount: _homeController.listSupplierByAddress.length,
+                    (context, index) {
+                      final supplier=_homeController.listSupplierByAddress[index];
+                      return  _HomeSupplierListItemWidget(supplier);
+                    }
+                  ),
+                );
+            },
+        )
       ],
     );
   }
-
-
-
-  
-  
 }
+
 class _HomeSupplierListItemWidget extends StatelessWidget {
-  const _HomeSupplierListItemWidget();
+  final SupplierNearbyMeModel supplier;
+  const _HomeSupplierListItemWidget(this.supplier);
 
   @override
   Widget build(BuildContext context) {
@@ -134,25 +140,23 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
               children: [
                 Expanded(
                   child: Container(
-                    margin:const EdgeInsets.only(left: 50),
-                    child:const  Column(
+                    margin: const EdgeInsets.only(left: 50),
+                    child:  Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Flexible(
-                          child: Text(
-                            "Clinica central ABC",
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                        Text(
+                          supplier.name,
+                          overflow: TextOverflow.ellipsis,
                         ),
-                         SizedBox(height: 10),
+                      const  SizedBox(height: 10),
                         Row(
                           children: [
-                            Icon(
+                           const Icon(
                               Icons.location_on,
                               size: 16,
                             ),
-                          Flexible(child: Text("1.34 km de distancia"))
+                            Flexible(child: Text("${supplier.disance.toStringAsFixed(2)} km de distancia"))
                           ],
                         )
                       ],
@@ -160,11 +164,11 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  margin:const EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(10),
                   child: CircleAvatar(
                     backgroundColor: context.primaryColor,
                     maxRadius: 15,
-                    child:const Icon(
+                    child: const Icon(
                       Icons.arrow_forward_ios,
                       size: 15,
                       color: Colors.white,
@@ -175,7 +179,7 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
             ),
           ),
           Container(
-            margin:const EdgeInsets.only(top: 5),
+            margin: const EdgeInsets.only(top: 5),
             width: 70,
             height: 70,
             decoration: BoxDecoration(
@@ -195,9 +199,9 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                   100,
                 ),
-                image: const DecorationImage(
+                image:  DecorationImage(
                   image: NetworkImage(
-                      'https://i.pinimg.com/originals/26/97/04/269704fb8eb42f30b21ade69d78c2c7c.jpg'),
+                     supplier.logo),
                   fit: BoxFit.contain,
                 ),
               ),

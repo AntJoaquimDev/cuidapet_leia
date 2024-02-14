@@ -3,6 +3,7 @@ import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart'
 import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_leia/app/entities/address_entity.dart';
 import 'package:cuidapet_leia/app/exceptions/supplier_category_model.dart';
+import 'package:cuidapet_leia/app/models/supplier_nearby_me_model.dart';
 import 'package:cuidapet_leia/app/modules/core/home/home_controller.dart';
 import 'package:cuidapet_leia/app/modules/core/home/widgets/home_appbar.dart';
 import 'package:flutter/material.dart';

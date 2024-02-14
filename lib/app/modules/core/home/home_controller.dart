@@ -2,13 +2,13 @@ import 'package:cuidapet_leia/app/core/life_cycle/controller_life_cycle.dart';
 import 'package:cuidapet_leia/app/core/ui/widgets/cuidapat_messages.dart';
 import 'package:cuidapet_leia/app/entities/address_entity.dart';
 import 'package:cuidapet_leia/app/exceptions/supplier_category_model.dart';
+import 'package:cuidapet_leia/app/models/supplier_nearby_me_model.dart';
 import 'package:cuidapet_leia/app/modules/auth/login/widgets/loader.dart';
 import 'package:cuidapet_leia/app/services/address/address_service.dart';
 import 'package:cuidapet_leia/app/services/supplier/supplier_service.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 part 'home_controller.g.dart';
-
 
 enum SupplierPageType { list, grid }
 
@@ -20,17 +20,33 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
 
   @readonly
   AddressEntity? _addressEntity;
+
   @readonly
   var _listCategories = <SupplierCategoryModel>[];
   @readonly
-  var _supplierPageTypeSelected = SupplierPageType.list;
+  var _listSupplierByAddress = <SupplierNearbyMeModel>[];
 
+  @readonly
+  var _supplierPageTypeSelected = SupplierPageType.list;
+  
+  late ReactionDisposer findSupplierReactionDisposer;
 
   HomeControllerBase({
     required AddressService addressService,
     required SupplierService supplierService,
   })  : _addressService = addressService,
         _supplierService = supplierService;
+  @override
+  void onInit([Map<String, dynamic>? params]) {
+    findSupplierReactionDisposer = reaction((address) => _addressEntity, (address) {
+      findSupplierByAddress();
+    });
+  }
+
+  @override
+  void dispose() {
+    findSupplierReactionDisposer;
+  }
 
   @override
   void onReady() async {
@@ -38,6 +54,7 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
       Loader.show();
       await _getAddressSelected();
       await _getCategories();
+
       Loader.hide();
     } finally {
       Loader.hide();
@@ -70,8 +87,19 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
       throw Exception();
     }
   }
-@action
+
+  @action
   Future<void> changeTabSupplier(SupplierPageType supplierPageType) async {
     _supplierPageTypeSelected = supplierPageType;
+  }
+
+  Future<void> findSupplierByAddress() async {
+    if (_addressEntity != null) {
+      final suppliers = await _supplierService.findNearBy(_addressEntity!);
+      _listSupplierByAddress = [...suppliers];
+    } else {
+      CuidapetMessages.alert(
+          'Para Realizar a busca de um petshop, voçê precisa selecionar um endereço.');
+    }
   }
 }
