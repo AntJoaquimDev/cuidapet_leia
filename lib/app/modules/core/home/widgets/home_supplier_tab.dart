@@ -18,7 +18,7 @@ class _HomeSupplierTab extends StatelessWidget {
                 child: homeController.supplierPageTypeSelected ==
                         SupplierPageType.list
                     ? _HomeSupplierList(homeController)
-                    : const _HomeSupplierGrid(),
+                    : _HomeSupplierGrid(homeController),
               );
             },
           ),
@@ -72,43 +72,25 @@ class _HomeTabHeader extends StatelessWidget {
   }
 }
 
-class _HomeSupplierGrid extends StatelessWidget {
-  const _HomeSupplierGrid({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return CustomScrollView(
-      slivers: [
-        SliverList(
-            delegate: SliverChildBuilderDelegate(
-          childCount: 10,
-          (context, index) => Text('Suplier Grid'),
-        )),
-      ],
-    );
-  }
-}
-
 class _HomeSupplierList extends StatelessWidget {
-  final HomeController _homeController;
-  const _HomeSupplierList(this._homeController);
+  final HomeController controller;
+  const _HomeSupplierList(this.controller);
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
         Observer(
-            builder: (_) {
-                return SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    childCount: _homeController.listSupplierByAddress.length,
-                    (context, index) {
-                      final supplier=_homeController.listSupplierByAddress[index];
-                      return  _HomeSupplierListItemWidget(supplier);
-                    }
-                  ),
-                );
-            },
+          builder: (_) {
+            return SliverList(
+              delegate: SliverChildBuilderDelegate(
+                  childCount: controller.listSupplierByAddress.length,
+                  (context, index) {
+                final supplier = controller.listSupplierByAddress[index];
+                return _HomeSupplierListItemWidget(supplier);
+              }),
+            );
+          },
         )
       ],
     );
@@ -141,7 +123,7 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(left: 50),
-                    child:  Column(
+                    child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -149,14 +131,16 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                           supplier.name,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      const  SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           children: [
-                           const Icon(
+                            const Icon(
                               Icons.location_on,
                               size: 16,
                             ),
-                            Flexible(child: Text("${supplier.disance.toStringAsFixed(2)} km de distancia"))
+                            Flexible(
+                                child: Text(
+                                    "${supplier.disance.toStringAsFixed(2)} km de distancia"))
                           ],
                         )
                       ],
@@ -199,9 +183,8 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                 borderRadius: BorderRadius.circular(
                   100,
                 ),
-                image:  DecorationImage(
-                  image: NetworkImage(
-                     supplier.logo),
+                image: DecorationImage(
+                  image: NetworkImage(supplier.logo),
                   fit: BoxFit.contain,
                 ),
               ),
@@ -209,6 +192,92 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
           )
         ],
       ),
+    );
+  }
+}
+
+class _HomeSupplierGrid extends StatelessWidget {
+  final HomeController controller;
+  const _HomeSupplierGrid(this.controller, {super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomScrollView(
+      slivers: [
+        SliverGrid(
+          delegate: SliverChildBuilderDelegate(
+              childCount: controller.listSupplierByAddress.length,
+              (context, index) {
+            final supplier = controller.listSupplierByAddress[index];
+            return _HomeSupplierCardItemWidget(supplier);
+          }),
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _HomeSupplierCardItemWidget extends StatelessWidget {
+  final SupplierNearbyMeModel supplir;
+  const _HomeSupplierCardItemWidget(this.supplir,{super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Card(
+          elevation: 5,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          margin:
+              const EdgeInsets.only(top: 30, left: 10, right: 10, bottom: 10),
+          child: SizedBox.expand(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  top: 40, right: 10, left: 10, bottom: 8),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  Text(
+                   supplir.name,
+                    style: context.textTheme.titleMedium,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  Text(
+                    '${supplir.disance.toStringAsFixed(2)}km de distancia',
+                    style: context.textTheme.labelSmall,
+                    textAlign: TextAlign.center,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        Align(
+          alignment: Alignment.topCenter,
+          child: CircleAvatar(
+            radius: 40,
+            backgroundColor: Colors.grey[300],
+          ),
+        ),
+         Positioned(
+          top: 4,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: CircleAvatar(
+              radius: 35,
+              backgroundImage: NetworkImage(
+              supplir.logo),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
