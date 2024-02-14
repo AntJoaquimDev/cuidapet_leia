@@ -14,44 +14,54 @@ class _HomeCategoriesWidget extends StatelessWidget {
     final categories = _controller.listCategories;
     return SizedBox(
       height: 130,
-
-      child: ListView.builder(
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: 15,//categories.length,
-        itemBuilder: (_,index){
-          //final category=categories[index];
-          //return _CategoriItem(categoryModel:category,);
-          return _CategoriItem();
-        },
-      ),
+      child: Observer(
+          builder: (_) {
+              return ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.horizontal,
+              itemCount: categories.length,
+              itemBuilder: (_, index) {
+                final category = categories[index];
+                return _CategoriItem(
+                  categoryModel: category,
+                );
+              },
+            );
+          },
+      )
     );
   }
 }
 
 class _CategoriItem extends StatelessWidget {
-//final SupplierCategoryModel _categoryModel;
-  
+  final SupplierCategoryModel _categoryModel;
+  const _CategoriItem({
+    Key? key,
+    required SupplierCategoryModel categoryModel,
+  }) : _categoryModel = categoryModel;
+  static const categoriesIcons = {
+    'P': Icons.pets,
+    'V': Icons.local_hospital,
+    'C': Icons.store_mall_directory,
+  };
   @override
   Widget build(BuildContext context) {
-   return Container(
-    margin: const EdgeInsets.all(20),
-    child: 
-     Column(
-      children: [
-        CircleAvatar(
-            backgroundColor:context.primaryLight,
+    return Container(
+      margin: const EdgeInsets.all(20),
+      child: Column(
+        children: [
+          CircleAvatar(
+            backgroundColor: context.primaryColor,
             radius: 30,
             child: Icon(
-             // categoriesIcons[_categoryModel.type],
-             Icons.pets,
+              categoriesIcons[_categoryModel.type],
               size: 30,
               color: Colors.black,
             ),
           ),
-        const Text('Pet-Leia'),
-      ],
-    ),
-    ) ;
+          Text(_categoryModel.name),
+        ],
+      ),
+    );
   }
 }
