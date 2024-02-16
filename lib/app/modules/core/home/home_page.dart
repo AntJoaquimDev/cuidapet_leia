@@ -1,51 +1,57 @@
 import 'package:cuidapet_leia/app/core/life_cycle/page_life_cicle_state.dart';
 import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart';
+import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
+import 'package:cuidapet_leia/app/entities/address_entity.dart';
+import 'package:cuidapet_leia/app/exceptions/supplier_category_model.dart';
+import 'package:cuidapet_leia/app/models/supplier_nearby_me_model.dart';
 import 'package:cuidapet_leia/app/modules/core/home/home_controller.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cuidapet_leia/app/modules/core/home/widgets/home_appbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+
+part 'widgets/home_address_widgets.dart';
+part 'widgets/home_categories_widget.dart';
+part 'widgets/home_supplier_tab.dart';
 
 class HomePage extends StatefulWidget {
-    const HomePage({super.key, 
+   
 
-  });
+
+  const HomePage(
+   
+  );
 
   @override
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends PageLifeCycleState<HomeController ,HomePage> {
+class _HomePageState extends PageLifeCycleState<HomeController, HomePage> {
+  AddressEntity? addressEntity;
 
   @override
-  Map<String, dynamic>? get params => {'testes':'testes params'};
+  Map<String, dynamic>? get params => {'testes': 'testes params'};
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home Page'),
-      ),
-      body: Column(
-        children: [
-          Center(
-            child: Image.asset(
-              'assets/images/logo.png',
-              width: 162.w,
-              height: 130.h,
-              fit: BoxFit.contain,
+      drawer: const Drawer(),
+      backgroundColor: Colors.grey[100],
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            HomeAppBar(controller),
+            SliverToBoxAdapter(
+              child: _HomeAddressWidgets(
+                controller: controller,
+              ),
             ),
-          ),
-          TextButton(
-              onPressed: () async {
-                // final categorieResponse =
-                //     await Modular.get<RestClient>().auth().get('/categories/');
-               
-              },
-              child: const Text('Teste Refresh_Token')),
-          TextButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              child: const Text('Logout'))
-        ],
+            SliverToBoxAdapter(
+              child: _HomeCategoriesWidget(
+                controller: controller,
+              ),
+            ),
+          ];
+        },
+        body:  _HomeSupplierTab(homeController: controller,),
       ),
     );
   }

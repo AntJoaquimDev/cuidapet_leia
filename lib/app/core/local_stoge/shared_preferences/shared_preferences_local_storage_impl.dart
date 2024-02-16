@@ -5,20 +5,20 @@ class SharedPreferencesLocalStorageImpl implements LocalStorage {
   Future<SharedPreferences> get _instance => SharedPreferences.getInstance();
 
   @override
-  Future<void> clear() async {
+  Future<void> clear<V>() async {
     final sharedPreferences = await _instance;
     sharedPreferences.clear();
   }
 
   @override
   @override
-  Future<bool> contains(String key) async {
+  Future<bool> contains<V>(String key) async {
     final sharedPreferences = await _instance;
     return sharedPreferences.containsKey(key);
   }
 
   @override
-  Future<void> remove(String key) async {
+  Future<void> remove<V>(String key) async {
     final sharedPreferences = await _instance;
     sharedPreferences.remove(key);
   }

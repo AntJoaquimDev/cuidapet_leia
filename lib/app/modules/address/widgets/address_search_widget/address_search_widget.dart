@@ -4,13 +4,13 @@ typedef AddressSelectedCallback = void Function(PlaceModel);
 
 class _AddressSearchWidget extends StatefulWidget {
    final AddressSelectedCallback addressSelectedCallback;
-  //final PlaceModel? placeModel;
+  final PlaceModel? placeModel;
 
   const _AddressSearchWidget({
-     Key? key,
+     super.key,
      required this.addressSelectedCallback,
-    // required this.placeModel, 
-    //required UniqueKey key,
+     required this.placeModel, 
+   // required UniqueKey key,
   });
 
   @override
@@ -23,13 +23,13 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
   final controller = Modular.get<AddressSearchController>();
 
   @override
-  // void initState() {
-  //   super.initState();
-  //   if (widget.placeModel != null) {
-  //     searchAddressEC.text = widget.placeModel?.address ?? '';
-  //     searchAddressFN.requestFocus();
-  //   }
-  // }
+  void initState() {
+    super.initState();
+    if (widget.placeModel != null) {
+      searchAddressEC.text = widget.placeModel?.address ?? '';
+      searchAddressFN.requestFocus();
+    }
+  }
 
   @override
   void dispose() {
@@ -98,8 +98,9 @@ class _AddressSearchWidgetState extends State<_AddressSearchWidget> {
 class _ItemTile extends StatelessWidget {
   
    String address;
+   
   _ItemTile({
-    required this.address
+    required this.address,
   });
  
  
@@ -107,6 +108,7 @@ class _ItemTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+     // onTap: onTap,
       leading: const Icon(Icons.location_on),
       title: Text(address),
     );

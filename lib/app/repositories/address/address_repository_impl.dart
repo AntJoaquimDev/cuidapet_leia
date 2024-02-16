@@ -65,7 +65,7 @@ class AddressRepositoryImpl implements AddressRepository {
 
   @override
   Future<void> deleteAll() async {
-    // final sqliteConn = await _sqliteConnectionFactory.openConnection();
-    // await sqliteConn.delete('address');
+    final sqliteConn = await _sqliteConnectionFactory.openConnection();
+    await sqliteConn.delete('address');
   }
 }
