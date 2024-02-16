@@ -1,4 +1,5 @@
 
+import 'package:cuidapet_leia/app/core/helpers/debouncer.dart';
 import 'package:cuidapet_leia/app/core/ui/extensions/size_screen_extension.dart';
 import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
 import 'package:cuidapet_leia/app/modules/core/home/home_controller.dart';
@@ -20,8 +21,9 @@ class HomeAppBar extends SliverAppBar {
 }
   class _CuidapetAppBar extends StatelessWidget {
   final HomeController controller;
+  final _debouncer=Debouncer(milliseconds: 500);
   
-  const _CuidapetAppBar({required this.controller});
+   _CuidapetAppBar({required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +65,11 @@ class HomeAppBar extends SliverAppBar {
                 elevation: 4,
                 borderRadius: BorderRadius.circular(25),
                 child: TextFormField(
+                  onChanged: (value){
+                    _debouncer.run(() { 
+                      controller.filterSupplieByName(value);
+                    });
+                    },
                   decoration: InputDecoration(
                     fillColor: Colors.white,
                     filled: true,

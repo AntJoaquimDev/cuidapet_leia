@@ -14,7 +14,7 @@ class _HomeSupplierTab extends StatelessWidget {
           child: Observer(
             builder: (_) {
               return AnimatedSwitcher(
-                duration: const Duration(microseconds: 400),
+                duration: const Duration(microseconds: 500),
                 child: homeController.supplierPageTypeSelected ==
                         SupplierPageType.list
                     ? _HomeSupplierList(homeController)
@@ -48,24 +48,26 @@ class _HomeTabHeader extends StatelessWidget {
                         SupplierPageType.list
                     ? Colors.black
                     : Colors.grey,
+                    size: 40,
               );
             },
           ),
         ),
-        Observer(
-          builder: (_) {
-            return InkWell(
-              onTap: () =>
-                  homeController.changeTabSupplier(SupplierPageType.grid),
-              child: Icon(
-                Icons.view_comfy,
-                color: homeController.supplierPageTypeSelected ==
-                        SupplierPageType.grid
-                    ? Colors.black
-                    : Colors.grey,
-              ),
-            );
-          },
+        InkWell(
+          onTap: () =>
+              homeController.changeTabSupplier(SupplierPageType.grid),
+          child: Observer(
+              builder: (_) {
+                  return Icon(
+                      Icons.view_comfy,
+                      color: homeController.supplierPageTypeSelected ==
+                              SupplierPageType.grid
+                          ? Colors.black
+                          : Colors.grey,
+                          size: 40,
+                    );
+              },
+          )
         )
       ],
     );
@@ -249,7 +251,7 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
                   ),
                   Text(
                     '${supplir.disance.toStringAsFixed(2)}km de distancia',
-                    style: context.textTheme.labelSmall,
+                    style: context.textTheme.titleMedium,
                     textAlign: TextAlign.center,
                     overflow: TextOverflow.ellipsis,
                   ),

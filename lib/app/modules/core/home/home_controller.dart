@@ -24,11 +24,19 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   @readonly
   var _listCategories = <SupplierCategoryModel>[];
   @readonly
+  var _supplierPageTypeSelected = SupplierPageType.list;
+
+  @readonly
   var _listSupplierByAddress = <SupplierNearbyMeModel>[];
 
   @readonly
-  var _supplierPageTypeSelected = SupplierPageType.list;
-  
+  var _listSupplierByAddressCache = <SupplierNearbyMeModel>[];
+
+  var _nameSearchText = '';
+
+  @readonly
+  SupplierCategoryModel? _supplierCategoryFilterSelected;
+
   late ReactionDisposer findSupplierReactionDisposer;
 
   HomeControllerBase({
@@ -36,11 +44,13 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
     required SupplierService supplierService,
   })  : _addressService = addressService,
         _supplierService = supplierService;
+
   @override
   void onInit([Map<String, dynamic>? params]) {
-    findSupplierReactionDisposer = reaction((address) => _addressEntity, (address) {
-      findSupplierByAddress();
-    });
+    findSupplierReactionDisposer = reaction(
+      (_) => _addressEntity,
+      (_) => findSupplierByAddress(),
+    );
   }
 
   @override
@@ -49,11 +59,16 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
   }
 
   @override
-  void onReady() async {
+  Future<void> onReady() async {
     try {
       Loader.show();
-      await _getAddressSelected();
-      await _getCategories();
+
+      //    await Future.wait([_getAddressSelected(), _getCategories()]);
+      //  if(_addressEntity !=null){
+      //   await _supplierService.getServices(supplierId)
+      //  }
+      _getAddressSelected();
+      _getCategories();
 
       Loader.hide();
     } finally {
@@ -61,7 +76,7 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
     }
   }
 
-  _getAddressSelected() async {
+  Future<void> _getAddressSelected() async {
     _addressEntity ??= await _addressService.getAddressSelected();
 
     if (_addressEntity == null) {
@@ -97,9 +112,46 @@ abstract class HomeControllerBase with Store, ControllerLifeCycle {
     if (_addressEntity != null) {
       final suppliers = await _supplierService.findNearBy(_addressEntity!);
       _listSupplierByAddress = [...suppliers];
+      _listSupplierByAddressCache = [...suppliers];
+      filterSuplier();
     } else {
       CuidapetMessages.alert(
           'Para Realizar a busca de um petshop, voçê precisa selecionar um endereço.');
     }
+  }
+
+  @action
+  void filterSupplierCategory(SupplierCategoryModel category) {
+    if (_supplierCategoryFilterSelected == category) {
+      _supplierCategoryFilterSelected = null;
+    } else {
+      _supplierCategoryFilterSelected = category;
+    }
+    filterSuplier();
+  }
+
+  void filterSupplieByName(String name) {
+    _nameSearchText = name;
+    filterSuplier();
+  }
+
+  @action
+  void filterSuplier() {
+    var suppliers = [..._listSupplierByAddressCache];
+
+    if (_supplierCategoryFilterSelected != null) {
+      suppliers = suppliers
+          .where((supplier) =>
+              supplier.category == _supplierCategoryFilterSelected?.id)
+          .toList();
+    }
+    if (_nameSearchText.isNotEmpty) {
+      suppliers = suppliers
+          .where((supplier) => supplier.name
+              .toLowerCase()
+              .contains(_nameSearchText.toLowerCase()))
+          .toList();
+    }
+    _listSupplierByAddress = [...suppliers];
   }
 }

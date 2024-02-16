@@ -45,6 +45,25 @@ mixin _$HomeController on HomeControllerBase, Store {
     });
   }
 
+  late final _$_supplierPageTypeSelectedAtom = Atom(
+      name: 'HomeControllerBase._supplierPageTypeSelected', context: context);
+
+  SupplierPageType get supplierPageTypeSelected {
+    _$_supplierPageTypeSelectedAtom.reportRead();
+    return super._supplierPageTypeSelected;
+  }
+
+  @override
+  SupplierPageType get _supplierPageTypeSelected => supplierPageTypeSelected;
+
+  @override
+  set _supplierPageTypeSelected(SupplierPageType value) {
+    _$_supplierPageTypeSelectedAtom
+        .reportWrite(value, super._supplierPageTypeSelected, () {
+      super._supplierPageTypeSelected = value;
+    });
+  }
+
   late final _$_listSupplierByAddressAtom =
       Atom(name: 'HomeControllerBase._listSupplierByAddress', context: context);
 
@@ -65,22 +84,44 @@ mixin _$HomeController on HomeControllerBase, Store {
     });
   }
 
-  late final _$_supplierPageTypeSelectedAtom = Atom(
-      name: 'HomeControllerBase._supplierPageTypeSelected', context: context);
+  late final _$_listSupplierByAddressCacheAtom = Atom(
+      name: 'HomeControllerBase._listSupplierByAddressCache', context: context);
 
-  SupplierPageType get supplierPageTypeSelected {
-    _$_supplierPageTypeSelectedAtom.reportRead();
-    return super._supplierPageTypeSelected;
+  List<SupplierNearbyMeModel> get listSupplierByAddressCache {
+    _$_listSupplierByAddressCacheAtom.reportRead();
+    return super._listSupplierByAddressCache;
   }
 
   @override
-  SupplierPageType get _supplierPageTypeSelected => supplierPageTypeSelected;
+  List<SupplierNearbyMeModel> get _listSupplierByAddressCache =>
+      listSupplierByAddressCache;
 
   @override
-  set _supplierPageTypeSelected(SupplierPageType value) {
-    _$_supplierPageTypeSelectedAtom
-        .reportWrite(value, super._supplierPageTypeSelected, () {
-      super._supplierPageTypeSelected = value;
+  set _listSupplierByAddressCache(List<SupplierNearbyMeModel> value) {
+    _$_listSupplierByAddressCacheAtom
+        .reportWrite(value, super._listSupplierByAddressCache, () {
+      super._listSupplierByAddressCache = value;
+    });
+  }
+
+  late final _$_supplierCategoryFilterSelectedAtom = Atom(
+      name: 'HomeControllerBase._supplierCategoryFilterSelected',
+      context: context);
+
+  SupplierCategoryModel? get supplierCategoryFilterSelected {
+    _$_supplierCategoryFilterSelectedAtom.reportRead();
+    return super._supplierCategoryFilterSelected;
+  }
+
+  @override
+  SupplierCategoryModel? get _supplierCategoryFilterSelected =>
+      supplierCategoryFilterSelected;
+
+  @override
+  set _supplierCategoryFilterSelected(SupplierCategoryModel? value) {
+    _$_supplierCategoryFilterSelectedAtom
+        .reportWrite(value, super._supplierCategoryFilterSelected, () {
+      super._supplierCategoryFilterSelected = value;
     });
   }
 
@@ -107,6 +148,31 @@ mixin _$HomeController on HomeControllerBase, Store {
   Future<void> changeTabSupplier(SupplierPageType supplierPageType) {
     return _$changeTabSupplierAsyncAction
         .run(() => super.changeTabSupplier(supplierPageType));
+  }
+
+  late final _$HomeControllerBaseActionController =
+      ActionController(name: 'HomeControllerBase', context: context);
+
+  @override
+  void filterSupplierCategory(SupplierCategoryModel category) {
+    final _$actionInfo = _$HomeControllerBaseActionController.startAction(
+        name: 'HomeControllerBase.filterSupplierCategory');
+    try {
+      return super.filterSupplierCategory(category);
+    } finally {
+      _$HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void filterSuplier() {
+    final _$actionInfo = _$HomeControllerBaseActionController.startAction(
+        name: 'HomeControllerBase.filterSuplier');
+    try {
+      return super.filterSuplier();
+    } finally {
+      _$HomeControllerBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override

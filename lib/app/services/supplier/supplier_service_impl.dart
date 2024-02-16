@@ -2,7 +2,9 @@
 
 import 'package:cuidapet_leia/app/entities/address_entity.dart';
 import 'package:cuidapet_leia/app/exceptions/supplier_category_model.dart';
+import 'package:cuidapet_leia/app/models/supplier_model.dart';
 import 'package:cuidapet_leia/app/models/supplier_nearby_me_model.dart';
+import 'package:cuidapet_leia/app/models/supplier_services_model.dart';
 import 'package:cuidapet_leia/app/repositories/supplier/supplier_repository.dart';
 
 import './supplier_service.dart';
@@ -19,4 +21,16 @@ class SupplierServiceImpl implements SupplierService {
 
   @override
   Future<List<SupplierNearbyMeModel>> findNearBy(AddressEntity address) =>_repository.findNearBy(address);
+
+  @override
+  Future<List<SupplierServicesModel>> getServices(int supplierId) {
+    // TODO: implement getServices
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<SupplierModel> getSupplierById(int id) {
+    // TODO: implement getSupplierById
+    throw UnimplementedError();
+  }
   }
