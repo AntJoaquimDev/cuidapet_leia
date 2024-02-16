@@ -1,4 +1,4 @@
-# cuidapet_leia app para PetShop.. desenvolvido com dart e flutter(flutter_modular e Mobx)
+# cuidapet_leia. App de buscas de PetShop.. desenvolvido com dart e flutter(flutter_modular e Mobx)
 
 A new Flutter project.
 
