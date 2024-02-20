@@ -8,6 +8,7 @@ import 'package:cuidapet_leia/app/modules/core/home/home_controller.dart';
 import 'package:cuidapet_leia/app/modules/core/home/widgets/home_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:flutter_modular/flutter_modular.dart';
 
 part 'widgets/home_address_widgets.dart';
 part 'widgets/home_categories_widget.dart';
