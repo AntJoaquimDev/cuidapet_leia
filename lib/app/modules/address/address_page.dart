@@ -1,4 +1,3 @@
-import 'package:cuidapet_leia/app/core/database/sqlite_connection_factory.dart';
 import 'package:cuidapet_leia/app/core/life_cycle/page_life_cicle_state.dart';
 import 'package:cuidapet_leia/app/core/mixins/location_mixin.dart';
 import 'package:cuidapet_leia/app/models/place_model.dart';
@@ -11,7 +10,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:google_places/google_places.dart';
 import 'package:mobx/mobx.dart';
 
 part 'widgets/addres_item.dart';
@@ -52,19 +50,20 @@ class _AddressPageState
 
     reactionDiposers.addAll([reactionService, reactionLocationPermission]);
   }
-@override
-  void dispose() {
 
-    for(var reaction in reactionDiposers){
+  @override
+  void dispose() {
+    for (var reaction in reactionDiposers) {
       reaction();
     }
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     //Modular.get<SqliteConnectionFactory>().openConnection();
     return WillPopScope(
-      onWillPop: ()=>controller.addressWasSelect(),
+      onWillPop: () => controller.addressWasSelect(),
       child: Scaffold(
         appBar: AppBar(
           iconTheme: IconThemeData(color: context.primaryColor),
@@ -131,7 +130,4 @@ class _AddressPageState
       ),
     );
   }
-
-@override
-List<Object?> get props => [reactionDiposers];
 }

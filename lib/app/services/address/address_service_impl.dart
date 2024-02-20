@@ -4,7 +4,6 @@ import 'package:cuidapet_leia/app/entities/address_entity.dart';
 
 import 'package:cuidapet_leia/app/models/place_model.dart';
 import 'package:cuidapet_leia/app/repositories/address/address_repository.dart';
-import 'package:flutter_modular/flutter_modular.dart';
 
 import 'address_service.dart';
 

@@ -1,9 +1,17 @@
 import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
 import 'package:flutter/material.dart';
 
-class SupplierServiceWidget extends StatelessWidget {
+class SupplierServiceWidget extends StatefulWidget {
+
+
   const SupplierServiceWidget({super.key});
 
+  @override
+  State<SupplierServiceWidget> createState() => _SupplierServiceWidgetState();
+}
+
+class _SupplierServiceWidgetState extends State<SupplierServiceWidget> {
+  
   @override
   Widget build(BuildContext context) {
     return ListTile(

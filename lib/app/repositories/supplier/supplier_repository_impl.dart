@@ -49,7 +49,7 @@ class SupplierRepositoryImpl implements SupplierRepository {
     return result.data?.map<SupplierNearbyMeModel>((supplierResponse)=>SupplierNearbyMeModel.fromMap(supplierResponse)).toList();
     }on RestClientException catch (e,s) {
      const message = 'Erro ao buscar fornecedor proximo de mim.';
-      _log.error(message);
+      _log.error(message,s);
       throw FailureException(message: message);
     }
   }
