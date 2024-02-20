@@ -204,7 +204,7 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
 
 class _HomeSupplierGrid extends StatelessWidget {
   final HomeController controller;
-  const _HomeSupplierGrid(this.controller, {super.key});
+  const _HomeSupplierGrid(this.controller);
 
   @override
   Widget build(BuildContext context) {
