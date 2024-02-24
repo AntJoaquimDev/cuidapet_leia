@@ -9,6 +9,6 @@ abstract class SupplierService {
   Future<List<SupplierCategoryModel>> getCategories();
   Future<List<SupplierNearbyMeModel>> findNearBy(AddressEntity address);
    Future<SupplierModel> getSupplierById(int id);
-  Future<List<SupplierServicesModel>> getServices(int supplierId);
+  Future<List<SupplierServicesModel>> findServices(int supplierId);
 }
 

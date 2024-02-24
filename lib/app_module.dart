@@ -1,45 +1,33 @@
-
 import 'package:cuidapet_leia/app/modules/address/address_module.dart';
 import 'package:cuidapet_leia/app/modules/auth/auth_module.dart';
 import 'package:cuidapet_leia/app/modules/auth/register/register_module.dart';
 import 'package:cuidapet_leia/app/modules/core/core_module.dart';
 import 'package:cuidapet_leia/app/modules/core/home/home_module.dart';
-import 'package:cuidapet_leia/app/modules/supplier/supplier_module.dart';
+import 'package:cuidapet_leia/app/modules/core/supplier/supplier_module.dart';
+import 'package:cuidapet_leia/app/modules/schedules/schedules_modules.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
 class AppModule extends Module {
-  
- @override
-  
+  @override
   List<Bind<Object>> get binds => [];
- 
-
-
 
   @override
   List<Module> get imports => [
         CoreModule(),
-        
-       
       ];
 
-
-
- @override
+  @override
   List<ModularRoute> get routes => [
-    ModuleRoute('/auth', module: AuthModule()),
-    ModuleRoute('/home', module: HomeModule()),
-     ModuleRoute('/register', module: RegisterModule()),
-     ModuleRoute('/address', module: AddressModule()),
-     ModuleRoute('/supplier', module: SupplierModule()),
+        ModuleRoute('/auth', module: AuthModule()),
+        ModuleRoute('/home', module: HomeModule()),
+        ModuleRoute('/register', module: RegisterModule()),
+        ModuleRoute('/address', module: AddressModule()),
+        ModuleRoute('/supplier', module: SupplierModule()),
+        ModuleRoute('/schedules', module: SchedulesModules()),
+      ];
 
-  ];
-  
-   
-
-
-@override
-String toString() {
+  @override
+  String toString() {
     return 'AppModule{}';
   }
-  }
+}

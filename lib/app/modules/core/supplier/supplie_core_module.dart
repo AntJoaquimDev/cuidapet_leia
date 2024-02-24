@@ -17,6 +17,6 @@ class SupplieCoreModule extends Module {
 
   @override
   List<ModularRoute> get routes => [
-        //ChildRoute('/', child: (context, args) => )
+       
       ];
 }

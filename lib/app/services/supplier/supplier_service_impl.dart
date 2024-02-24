@@ -20,17 +20,12 @@ class SupplierServiceImpl implements SupplierService {
       _repository.getCategories();
 
   @override
-  Future<List<SupplierNearbyMeModel>> findNearBy(AddressEntity address) =>_repository.findNearBy(address);
+  Future<List<SupplierNearbyMeModel>> findNearBy(AddressEntity address) =>
+      _repository.findNearBy(address);
 
   @override
-  Future<List<SupplierServicesModel>> getServices(int supplierId) {
-    // TODO: implement getServices
-    throw UnimplementedError();
-  }
-
+  Future<SupplierModel> getSupplierById(int id) => _repository.findById(id);
   @override
-  Future<SupplierModel> getSupplierById(int id) {
-    // TODO: implement getSupplierById
-    throw UnimplementedError();
-  }
-  }
+  Future<List<SupplierServicesModel>> findServices(int supplierId) =>
+      _repository.findService(supplierId);
+}

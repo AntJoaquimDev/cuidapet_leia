@@ -48,27 +48,26 @@ class _HomeTabHeader extends StatelessWidget {
                         SupplierPageType.list
                     ? Colors.black
                     : Colors.grey,
-                    size: 40,
+                size: 40,
               );
             },
           ),
         ),
         InkWell(
-          onTap: () =>
-              homeController.changeTabSupplier(SupplierPageType.grid),
-          child: Observer(
+            onTap: () =>
+                homeController.changeTabSupplier(SupplierPageType.grid),
+            child: Observer(
               builder: (_) {
-                  return Icon(
-                      Icons.view_comfy,
-                      color: homeController.supplierPageTypeSelected ==
-                              SupplierPageType.grid
-                          ? Colors.black
-                          : Colors.grey,
-                          size: 40,
-                    );
+                return Icon(
+                  Icons.view_comfy,
+                  color: homeController.supplierPageTypeSelected ==
+                          SupplierPageType.grid
+                      ? Colors.black
+                      : Colors.grey,
+                  size: 40,
+                );
               },
-          )
-        )
+            ))
       ],
     );
   }
@@ -100,14 +99,13 @@ class _HomeSupplierList extends StatelessWidget {
 }
 
 class _HomeSupplierListItemWidget extends StatelessWidget {
-
   final SupplierNearbyMeModel supplier;
   const _HomeSupplierListItemWidget(this.supplier);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=>Modular.to.pushNamed('/supplier/',arguments: supplier.id),
+      onTap: () => Modular.to.pushNamed('/supplier/', arguments: supplier.id),
       child: Container(
         margin: const EdgeInsets.symmetric(
           vertical: 5,
@@ -136,7 +134,7 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                             supplier.name,
                             overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 6),
                           Row(
                             children: [
                               const Icon(
@@ -144,8 +142,9 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                                 size: 16,
                               ),
                               Flexible(
-                                  child: Text(
-                                      "${supplier.disance.toStringAsFixed(2)} km de distancia"))
+                                child: Text(
+                                    "${supplier.disance.toStringAsFixed(2)} km de distancia"),
+                              )
                             ],
                           )
                         ],
@@ -159,7 +158,7 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                       maxRadius: 15,
                       child: const Icon(
                         Icons.arrow_forward_ios,
-                        size: 15,
+                        size: 10,
                         color: Colors.white,
                       ),
                     ),
@@ -194,7 +193,7 @@ class _HomeSupplierListItemWidget extends StatelessWidget {
                   ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -233,7 +232,7 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=>Modular.to.pushNamed('/supplier/',arguments: supplier.id),
+      onTap: () => Modular.to.pushNamed('/supplier/', arguments: supplier.id),
       child: Stack(
         children: [
           Card(
@@ -250,7 +249,7 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Text(
-                     supplier.name,
+                      supplier.name,
                       style: context.textTheme.titleMedium,
                       textAlign: TextAlign.center,
                       overflow: TextOverflow.ellipsis,
@@ -273,15 +272,14 @@ class _HomeSupplierCardItemWidget extends StatelessWidget {
               backgroundColor: Colors.grey[300],
             ),
           ),
-           Positioned(
+          Positioned(
             top: 4,
             left: 0,
             right: 0,
             child: Center(
               child: CircleAvatar(
                 radius: 35,
-                backgroundImage: NetworkImage(
-                supplier.logo),
+                backgroundImage: NetworkImage(supplier.logo),
               ),
             ),
           ),

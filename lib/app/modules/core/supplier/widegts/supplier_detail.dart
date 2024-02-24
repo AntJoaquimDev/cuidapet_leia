@@ -1,8 +1,18 @@
+import 'package:cuidapet_leia/app/modules/core/supplier/supplier_controller.dart';
 import 'package:flutter/material.dart';
+
 import 'package:cuidapet_leia/app/core/ui/extensions/theme_extension.dart';
+import 'package:cuidapet_leia/app/models/supplier_model.dart';
 
 class SupplierDetail extends StatelessWidget {
-  const SupplierDetail({super.key});
+  final SupplierModel supplier;
+  final SupplierController controller;
+
+  const SupplierDetail({
+    Key? key,
+    required this.supplier,
+    required this.controller,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +23,7 @@ class SupplierDetail extends StatelessWidget {
           padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 5),
           child: Center(
             child: Text(
-              'Clinica Pulga Morta',
+              supplier.name,
               style: context.textTheme.titleLarge,
               textAlign: TextAlign.center,
             ),
@@ -31,25 +41,26 @@ class SupplierDetail extends StatelessWidget {
             textAlign: TextAlign.start,
           ),
         ),
-        const ListTile(
-          leading: Icon(
+        ListTile(
+           onTap:controller.goToGeoCopyToClipat,
+          leading: const Icon(
             Icons.location_city,
             color: Colors.black,
           ),
-          title: Text('Av. Livio de Carvalho 200'),
+          title: Text(supplier.address),
         ),
-        const ListTile(
-          leading: Icon(
+        ListTile(
+          onTap:  controller.goToPhoneCopyToClipat,
+          leading: const Icon(
             Icons.phone_android,
             color: Colors.black,
           ),
-          title: Text('86994687689'),
+          title: Text(supplier.phone),
         ),
         Divider(
           thickness: 1,
           color: context.primaryColor,
         ),
-      
       ],
     );
   }
